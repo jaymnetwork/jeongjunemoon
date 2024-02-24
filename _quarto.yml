@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  search: 
+   location: navbar
+   type: overlay
+   
+  navbar:
+  
+    left:
+      - text: JeongJune Moon
+        href: index.qmd
+
+        
+    right:
+      - text: About
+        menu: 
+          - text: Research Interest
+            href: research_interest.qmd
+            
+          - text: Curriculum Vitae
+            href: resume.qmd
+      - href: projects.qmd
+        text: Projects
+
+format:
+  html:
+    theme: theme.scss
+    css: styles.css
