@@ -30,6 +30,7 @@ website:
 
 format:
   html:
+    theme: theme.scss
     css: styles.css
 
 
