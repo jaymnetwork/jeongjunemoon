@@ -1,6 +1,19 @@
 /* css styles */
 
+.navbar-dark {
+    background-color: #FFF;
+}
 
+.navbar-dark .navbar-nav .nav-link {
+    color: #222222;
+}
+
+.navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon {
+    width: 26px;
+    height: 26px;
+    color: #222222;
+    opacity: 1;
+}
 
 body {
     margin: 0;
