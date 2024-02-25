@@ -1,4 +1,4 @@
-![](images/166732135.0.webp){width=800px height=400px }
+![](images/166732135.0.webp){width=800px }
 
 As an avid sports analytics fan, my previous research interests have been predominantly in prediction modeling and statistical methods. While the discipline of Data Science has been growing in the sports industry, my focus has been extracting insights from the information to discover underappreciated players by using mathematical approaches including Regression models and Data Envelopment Analysis.
 

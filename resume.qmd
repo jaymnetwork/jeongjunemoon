@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae"
 ---
-<iframe width="900" height="800" src="images/CV_JeongJun Moon.pdf">
+<iframe width="700" height="600" src="images/CV_JeongJun Moon.pdf">
 
 </iframe>

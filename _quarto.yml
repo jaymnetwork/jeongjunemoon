@@ -3,19 +3,22 @@ project:
   output-dir: docs
 
 website:
-  search: 
+  search:
    location: navbar
    type: overlay
-   
+
   navbar:
-  
-    left:
-      - text: JeongJune Moon
-        href: index.qmd
+    logo: "images/kapoor.jpg"
+    href: index.qmd
+
+    
+    # left:
+    #   - text: JeongJune Moon
+    #     href: index.qmd
 
         
     right:
-      - text: About
+      - text: ABOUT
         menu: 
           - text: Research Interest
             href: research_interest.qmd
@@ -23,9 +26,11 @@ website:
           - text: Curriculum Vitae
             href: resume.qmd
       - href: projects.qmd
-        text: Projects
+        text: PROJECTS
 
 format:
   html:
     theme: theme.scss
     css: styles.css
+
+
