@@ -1,5 +1,9 @@
 /* css styles */
 
+@font-face{
+  font-family: "MyFont";
+  src: "font/JosefinSans-Regular.ttf"
+}
 .navbar-dark {
     background-color: #FFF;
 }
@@ -17,7 +21,7 @@
 
 body {
     margin: 0;
-    font-family: "Merriweather";
+    font-family: 'Oleo script';
     font-size: var(--bs-body-font-size);
     font-weight: var(--bs-body-font-weight);
     line-height: var(--bs-body-line-height);
