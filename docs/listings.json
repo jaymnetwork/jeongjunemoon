@@ -5,9 +5,6 @@
   },
   {
     "listing": "/jeongjunemoon/projects.html",
-    "items": [
-      "/jeongjunemoon/posts/post-with-code/index.html",
-      "/jeongjunemoon/posts/welcome/index.html"
-    ]
+    "items": []
   }
 ]
