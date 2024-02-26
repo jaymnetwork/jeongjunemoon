@@ -15,5 +15,10 @@ about:
         url: "mailto:jaymnetwork@gmail.com"
 output:
   postcards::jolla
+
+footer: |
+  <footer>
+      <p>&copy; 2022 Your Blog Name. All rights reserved.</p>
+  </footer>
 ---
-Hello
+Hello, my legal name does not have the letter 'e' at the end, but I prefer to write my name as JeongJune. I'm a researcher in the domain of data science. I started studying data science at the University of Washington for my Bachelor's degree, and I'm currently a master's student in the statistics department at the University of Pittsburgh. 

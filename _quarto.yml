@@ -3,6 +3,10 @@ project:
   output-dir: docs
 
 website:
+  page-footer:
+    center: 
+      - text: "   Copyright © 2023 JeongJune Moon. All Rights Reserved."
+      
   search:
    location: navbar
    type: overlay
@@ -27,11 +31,15 @@ website:
             href: resume.qmd
       - href: projects.qmd
         text: PROJECTS
+      
 
 format:
   html:
     theme: theme.scss
     css: styles.css
 
+styles:
+  css:styles.css
 
 
+layout: layout.html

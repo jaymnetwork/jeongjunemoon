@@ -1,9 +1,12 @@
 /* css styles */
 
-@font-face{
+@font-face {
   font-family: "MyFont";
-  src: "font/JosefinSans-Regular.ttf"
+  src: url("font/gilroy-light.otf");
 }
+
+
+
 .navbar-dark {
     background-color: #FFF;
 }
@@ -21,7 +24,7 @@
 
 body {
     margin: 0;
-    font-family: 'Oleo script';
+    font-family: MyFont;
     font-size: var(--bs-body-font-size);
     font-weight: var(--bs-body-font-weight);
     line-height: var(--bs-body-line-height);
@@ -30,6 +33,38 @@ body {
     background-color: var(--bs-body-bg);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+p {
+  font-family: "MyFont";
+  font-size: 14px;
+  color:  #222222;
+}
+
+
+element.style {
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.dropdown-item {
+    display: block;
+    font-size: 14px;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    font-family: "MyFont";
+    color: #222222;
+    text-align: inherit;
+    text-decoration: none;
+    -webkit-text-decoration: none;
+    -moz-text-decoration: none;
+    -ms-text-decoration: none;
+    -o-text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
 }
 
 h1.title, .title.h1 {
@@ -46,7 +81,7 @@ h1.title, .title.h1 {
     padding-top: 13px;
 }
 .navbar {
-    font-size: 13px;
+    font-size: 13.9px;
     position: fixed;
     top: 0;
     width: 100%;
@@ -92,3 +127,11 @@ div.quarto-about-jolla .about-link {
               padding-left:13px;
               padding-top:1.3px;
                                      }
+                                     
+body:not(.floating) .nav-footer {
+    border-top: 0px solid #dee2e6; */
+}
+
+.nav-footer .nav-footer-center {
+    font-size: 10px;
+}
