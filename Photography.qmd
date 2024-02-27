@@ -1,0 +1,30 @@
+---
+title: "Photography"
+filters:
+   - lightbox
+lightbox: auto
+---
+This is a place where I archive my photos. These are the ones I would likely select for a future photobook if I get a chance to publish one.
+
+
+::: {style="display: grid;grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));grid-gap: 1em;"}
+
+![](images/IMG_7934.JPG){group="my-gallery"}
+
+![](images/IMG_8067.JPG){group="my-gallery"}
+
+![](images/IMG_7969.jpg){group="my-gallery"}
+
+![](images/16940017.JPG){group="my-gallery"}
+
+![](images/000001540022.JPG){group="my-gallery"}
+
+![](images/IMG_7960_2.JPG){group="my-gallery"}
+
+![](images/R0000946-2.JPG){group="my-gallery"}
+
+![](images/IMG_3860.jpg){group="my-gallery"}
+
+![](images/AA004.jpg){group="my-gallery"}
+
+:::

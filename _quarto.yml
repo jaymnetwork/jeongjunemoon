@@ -24,13 +24,21 @@ website:
     right:
       - text: ABOUT
         menu: 
-          - text: Research Interest
-            href: research_interest.qmd
+          - text: Education
+            href: Education.qmd
             
           - text: Curriculum Vitae
             href: resume.qmd
-      - href: projects.qmd
-        text: PROJECTS
+            
+      - text: RESEARCH
+        menu: 
+          - text: Publications
+            href: Publications.qmd
+          - text: Projects  
+            href: projects.qmd
+            
+      - text: PHOTOGRAPHY
+        href: Photography.qmd
       
 
 format:

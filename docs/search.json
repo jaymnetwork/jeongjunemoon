@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "Although I prefer to write my name as JeongJune, my legal name does not have the letter ‘e’ at the end."
+  },
+  {
+    "objectID": "Photography.html",
+    "href": "Photography.html",
+    "title": "Photography",
+    "section": "",
+    "text": "This is a place where I archive my photos. These are the ones I would likely select for a future photobook if I get a chance to publish one."
+  },
+  {
     "objectID": "projects.html",
     "href": "projects.html",
     "title": "Projects",
@@ -11,7 +25,21 @@
     "href": "index.html",
     "title": "JeongJune Moon",
     "section": "",
-    "text": "Hello, my legal name does not have the letter ‘e’ at the end, but I prefer to write my name as JeongJune. I’m a researcher in the domain of data science. I started studying data science at the University of Washington for my Bachelor’s degree, and I’m currently a master’s student in the statistics department at the University of Pittsburgh."
+    "text": "Hello, I’m a researcher and analyst in the domain of data science. My previous research interests has predominantly centered around predictive modeling and inferential statistics. I have been applying these frameworks and methodologies to the fields that pique my interest. For the past few years, one of these areas has been sports analytics. As an avid sports fan, I have focused on discovering underappreciated athletes by employing regression models and Data Envelopment Analysis. Although my past research has primarily focused on sports analytics, I’m also open to exploring any other topics that resonate with my interests and could positively impact our community."
+  },
+  {
+    "objectID": "Publications.html",
+    "href": "Publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Philsoo Kim, SangHyun Lee, JeongJun Moon (2024). Evaluating the Operational Efficiency of NBA Teams on Franchise Value: An Assessment of Data Envelopment Analysis. Plos One. – FORTHCOMING\nSangHyun Lee, JeongJun Moon, Philsoo Kim (2023). When Does Losing Lead to Winning? An Empirical Investigation on the Korean Professional Basketball League. Korean Journal of Sport Science. https://doi.org/10.24985/kjss.2023.34.4.618\nPhilsoo Kim, JeongJun Moon (2023). DEA Assessment of Evaluating Possession based Player Efficiency of Korean Professional Basketball Players and Floor Impact Counter (FIC) Performance. Korean Society of Sport and Leisure Studies https://doi.org/10.51979/KSSLS.2023.04.92.39"
+  },
+  {
+    "objectID": "Education.html",
+    "href": "Education.html",
+    "title": "Education",
+    "section": "",
+    "text": "University of Pittsburgh | Pittsburgh, PA.      (Sep. 2022 – May. 2024)\nMaster of Arts in Statistics\nUniversity of Washington | Seattle, WA.         (Sep. 2019 – Dec. 2021)\nBachelor of Arts in Geography: Data Science, Minor in Informatics"
   },
   {
     "objectID": "research_interest.html",

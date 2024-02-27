@@ -5,7 +5,18 @@
   src: url("font/gilroy-light.otf");
 }
 
-
+@font-face {
+  font-family: "MyFont2";
+  src: url("font/Gilroy-Regular.ttf");
+}
+a {
+    color: #0000CC;
+    text-decoration: underline;
+    -webkit-text-decoration: underline;
+    -moz-text-decoration: underline;
+    -ms-text-decoration: underline;
+    -o-text-decoration: underline;
+}
 
 .navbar-dark {
     background-color: #FFF;
@@ -24,7 +35,7 @@
 
 body {
     margin: 0;
-    font-family: MyFont;
+    font-family: "MyFont2";
     font-size: var(--bs-body-font-size);
     font-weight: var(--bs-body-font-weight);
     line-height: var(--bs-body-line-height);
@@ -36,10 +47,11 @@ body {
 }
 
 p {
-  font-family: "MyFont";
+  font-family: "Courier New";
   font-size: 14px;
   color:  #222222;
 }
+
 
 
 element.style {
