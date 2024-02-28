@@ -488,13 +488,13 @@ One of the advantages of Random Forest algorithms is that we can visualize the i
 
 ```{r echo=F}
 # Lillard
-mod_forest1 <- randomForest(formula=form_def, data=lillard_shots3, ntree = 1000) ; mod_forest1
+mod_forest1 <- randomForest(formula=form_full, data=lillard_shots3, ntree = 1000) ; mod_forest1
 # Doncic
-mod_forest2 <- randomForest(formula=form_def, data=doncic_shots3, ntree = 1000) ; mod_forest2
+mod_forest2 <- randomForest(formula=form_full, data=doncic_shots3, ntree = 1000) ; mod_forest2
 # Mitchell
-mod_forest3 <- randomForest(formula=form_def, data=mitchell_shots3, ntree = 1000) ; mod_forest3
+mod_forest3 <- randomForest(formula=form_full, data=mitchell_shots3, ntree = 1000) ; mod_forest3
 # Embiid
-mod_forest4 <- randomForest(formula=form_def, data=embiid_shots3, ntree = 1000) ; mod_forest4
+mod_forest4 <- randomForest(formula=form_full, data=embiid_shots3, ntree = 1000) ; mod_forest4
 ```
 
 ```{r echo=F}
