@@ -18,6 +18,7 @@ library(geomtextpath)
 library(tidyverse)
 library(randomForest)
 library(car)
+library("RColorBrewer")
 ```
 
 ## Introduction 
@@ -58,7 +59,7 @@ Looking at the histogram below, the scores from four players are very extreme va
 ```{r echo = FALSE}
 # NBA Points in Single Game By Players (2022-23)
 ggplot(gamedata, aes(x=pts))+
-  geom_histogram(color="#ebebeb", fill="#108A99")+
+  geom_histogram(color="#ebebeb", fill="steelblue", alpha=0.6)+
   ggtitle("NBA Points in Single Game By Players (2022-23)") +
   xlab("Points In Single Game")+ 
   ylab("The Number of Games")+
@@ -101,7 +102,7 @@ Prior to testing the hot hand hypothesis, we analyzed each player's shot prefere
 # We acquired the courtPoints.csv from 
 # "https://raw.githubusercontent.com/toddwschneider/ballr/master/plot_court.R" 
 # and saved as CSV file.
-court_points <- read.csv("courtPoints.csv") 
+court_points <- read.csv("/Users/jaymnetwork/Desktop/courtPoints.csv") 
 
 # The function visualizes the shot density using heat map for each player
 shotloc_d<-function(data){
@@ -166,7 +167,7 @@ polar2<-function(data,col,dir){
   theme(
         axis.text.x = element_text(size=rel(0.65), face='bold'),
         plot.title = element_text(size=8, face="bold")) +
-    scale_fill_viridis_d(option = col,direction = dir) +
+    scale_fill_manual(values = rev(brewer.pal(n = 5, name = "YlOrRd")))+
     ggtitle(data$namePlayer)+
   labs(x = NULL, y = NULL)+ coord_curvedpolar()
 
@@ -175,10 +176,10 @@ polar2<-function(data,col,dir){
 
 ```{r echo=F}
 # Coxcomb chart to see the most frequent shot types of each player and the proportion with in a player
-ld2<-polar2(doncic_shots,"E",1)
-dl2<-polar2(lillard_shots,"B",1)
-dm2<-polar2(mitchell_shots,"C",1)
-je2<-polar2(embiid_shots,"D",1)
+ld2<-polar2(doncic_shots)
+dl2<-polar2(lillard_shots)
+dm2<-polar2(mitchell_shots)
+je2<-polar2(embiid_shots)
 
 ggarrange(ld2, dl2, dm2, je2, heights = c(0.7, 0.7, 1, 1),
           ncol = 2, nrow = 2)
@@ -292,10 +293,10 @@ shot_line<-function(data,title){
   ggplot(data = data) + 
   xlab("Consecutive Field Goals Made") + 
   ylab("Field Goal Percentage") + 
-  geom_line(aes(x=previousShot,y = ShotPercentage, group = 1), color = 'darkorange',
+  geom_line(aes(x=previousShot,y = ShotPercentage, group = 1), color = 'darkred',
             size=0.6) +
     geom_point(mapping = aes(x = previousShot, y = ShotPercentage),size=0.7,
-               color = 'darkorange')+
+               color = 'darkred')+
   scale_y_continuous(limits=c(0,1))+
   ggtitle(title)+theme(aspect.ratio = 0.5,
         axis.text = element_text(size=7),
@@ -486,7 +487,7 @@ We used Logistic Regression and Random Forest machine learning algorithms for ea
 One of the advantages of Random Forest algorithms is that we can visualize the importance of variables used in the model when predicting the response variable. For all four players, the five most important variables when forecasting were the X and Y coordinates of a location, last percentage, shot distance, and the type of shot. Except for the previous percentage, the other four variables are more related to where the player is shooting. For example, types of shots such as dunk or layup shots are attempts that can only be performed near the basket and can not be from behind the 3-point arc. 
 
 
-```{r echo=F}
+```{r results='hide'}
 # Lillard
 mod_forest1 <- randomForest(formula=form_full, data=lillard_shots3, ntree = 1000) ; mod_forest1
 # Doncic
