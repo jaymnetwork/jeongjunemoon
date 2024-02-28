@@ -5,7 +5,7 @@ author: JeongJune Moon
 categories: [Basketball]
 image: "hinson.webp"
 ---
-![Photo by Lance King/Getty Images](hinson.webp){height=500px}
+![Photo by Lance King | Getty Images](hinson.webp){height=500px}
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
