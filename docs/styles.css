@@ -258,10 +258,10 @@ div.quarto-post .listing-description {
     line-height: 1;
 }
 
-li {
-    font-size: 14px;
-    display: list-item;
-    text-align: -webkit-match-parent;
+
+section#reference.level2 {
+    font-size:14px;
+    display: block;
 }
 
 pre, code, kbd, samp {

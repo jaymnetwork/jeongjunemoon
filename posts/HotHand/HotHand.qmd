@@ -487,7 +487,7 @@ We used Logistic Regression and Random Forest machine learning algorithms for ea
 One of the advantages of Random Forest algorithms is that we can visualize the importance of variables used in the model when predicting the response variable. For all four players, the five most important variables when forecasting were the X and Y coordinates of a location, last percentage, shot distance, and the type of shot. Except for the previous percentage, the other four variables are more related to where the player is shooting. For example, types of shots such as dunk or layup shots are attempts that can only be performed near the basket and can not be from behind the 3-point arc. 
 
 
-```{r results='hide'}
+```{r echo=F, results='hide'}
 # Lillard
 mod_forest1 <- randomForest(formula=form_full, data=lillard_shots3, ntree = 1000) ; mod_forest1
 # Doncic
@@ -547,7 +547,7 @@ model<-(lm(isShotMadeBinary ~ locationX+locationY+streaks+lastFour+lastPercentag
 vif(model)
 ```
 
-From the summary results, all four variables used in the definition had high p-values. However, *distancShot* variable was statistically significant for all four players. Note that as the coefficient is negative, we recognized that as a player shoots further to the basket, the player is likely to miss the shot, i.e., if a player gets closer shot, the player will have a higher chance of making the shot.
+From the summary results, all four variables used in the definition had high p-values. However, *distanceShot* variable was statistically significant for all four players. Note that as the coefficient is negative, we recognized that as a player shoots further to the basket, the player is likely to miss the shot, i.e., if a player gets closer shot, the player will have a higher chance of making the shot.
 
 ```{r}
 # Logistic Regression Model
