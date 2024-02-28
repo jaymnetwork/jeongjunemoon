@@ -2,10 +2,11 @@ project:
   type: website
   output-dir: docs
 
+
 website:
   page-footer:
     center: 
-      - text: "   Copyright © 2023 JeongJune Moon. All Rights Reserved."
+      - text: "Copyright © 2023 JeongJune Moon. All Rights Reserved."
       
   search:
    location: navbar
@@ -44,10 +45,10 @@ website:
 format:
   html:
     theme: theme.scss
-    css: styles.css
 
-styles:
-  css:styles.css
+css:
+  - styles.css
+  - lightbox.css
 
 
-layout: layout.html
+

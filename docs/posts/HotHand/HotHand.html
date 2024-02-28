@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="JeongJune Moon">
+<meta name="dcterms.date" content="2023-01-02">
+
+<title>Does Hot Hand exist?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="lightbox.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/kapoor.jpg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">ABOUT</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="../../Education.html">
+ <span class="dropdown-text">Education</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resume.html">
+ <span class="dropdown-text">Curriculum Vitae</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-research" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">RESEARCH</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-research">    
+        <li>
+    <a class="dropdown-item" href="../../Publications.html">
+ <span class="dropdown-text">Publications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../projects.html">
+ <span class="dropdown-text">Projects</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../Photography.html">
+ <span class="menu-text">PHOTOGRAPHY</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Does Hot Hand exist?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Basketball</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>JeongJune Moon </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 2, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="hinson.webp" height="500" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Photo by Lance King/Getty Images</figcaption><p></p>
+</figure>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The term “hot hand” is a belief originated in basketball that a streak of success temporarily increases the chance of making the next shot. Commentators and fans use such phrases on an athlete who keeps making consecutive shots during the broadcast and also describe that the player is “on fire.” This widespread perception was, however, disproved in 1985 by psychologists Thomas Gilovich, Robert Vallone, and Amos Tversky. Gilovich et al.&nbsp;demonstrated that the phenomenon is, in fact, a cognitive illusion by random sequence. For instance, when a person flips a coin ten times, there is a chance of having eight consecutive heads. Nevertheless, it is difficult to conclude that the previous seven heads increased the chance of getting a final head in the last attempt. Thus, Gilovich et al.&nbsp;provided that there is no sufficient evidence for a correlation between successive shots and the chance of making the next shot. Studies have continued to follow up and revived the hot-hand debate in academia. Kostas Pelechrinis, an associate professor of computing and information at Pitt’s School of Computing and Information, claimed that Hot hand exists and “players can indeed get hot in actual live-game situations.” This project aims to empirically analyze whether the hot hand exists in the latest NBA season (22-23). The data from modern-era basketball provides a large sample size and better quality in terms of specificity relative to the data used in 1985 by Gilovich et al.&nbsp;Thus, this project expects a better outcome and interpretation of hot hand with a modern dataset of shooting records of renowned NBA players. If the hot hand exists, a coach would be able to know which player should shoot in the last minute of the game when the game is tied. Furthermore, this Hot hand is an interesting theory since it does not only apply to basketball. If the hot hand is not valid, a gambler who keeps winning the game at a casino should know that he will be able to lose all his money in his next bet.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="analysis-identifying-the-highest-points-scored-in-a-single-game" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-identifying-the-highest-points-scored-in-a-single-game">Analysis: Identifying the highest points scored in a single Game</h2>
+<p>Our analysis looks at NBA single-game leaders and records for points during the 2022-23 season, as these NBA players are more likely to make consecutive shots. The code below describes the project sample comprisng the top 5 NBA single-game leaders for points during the 2022-23 season: Damian Lillard (71, 60 points), Donovan Mitchell (71 points), Luka Doncic (60 points) and Joel Embiid (59 points).</p>
+<p>Looking at the histogram below, the scores from four players are very extreme values from right-skewed distribution. Two takeaways from this figure were that 1. it is very rare to score above 50 points, and 2. the four players are phenomenal scorers in the NBA.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="HotHand_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="analysis-players-preference" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-players-preference">Analysis: Player’s preference</h2>
+<p>Prior to testing the hot hand hypothesis, we analyzed each player’s shot preference. Shot preference indicates where in the court the player prefers to shoot. Many studies have been related to shot locations with the hot hand. Lantis et al.&nbsp;state that “difference in shot location from the previous shot also grows in magnitude for longer streaks of success.” We can also make further claims with the result of a hot hand and shot preferences. For instance, if a player is likely to shoot near the post and is identified to have a hot hand, we can also further investigate more players who tend to shoot from similar locations.</p>
+<div class="cell">
+
+</div>
+<p>Here is the shot position data for 4 players:</p>
+<div class="cell" data-warnings="false">
+<div class="cell-output-display">
+<p><img src="HotHand_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Using the heatmap, we classified the player’s preferred shot locations. For Damian Lillard, the 3-point line and the area under the basket was the most frequent zone for him to shoot. While Donovan Mitchell had a similar pattern with Lillard, on the contrary, Joel Embiid mainly shot from the basket area. Luka Doncic also attempted his shots in the paint area and behind the arc but seemed to have a tendency in the left midrange as well, with the heat stretching more from the basket.</p>
+<p>Besides the shot preference, shot types are relevant to the hot hand and can also be a proxy variable for shot difficulty (Bocskocsky et al., 2014). There are various types of shots in basketball: Driving lay-ups, pull-up jump shots, step-back jump shots, etc. We analyzed the most frequent types of shots attempted by each player.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="HotHand_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As a result, Damian Lillard and Donovan Mitchell had the same pattern by having the same four types of shots as their most frequent shot types: Pull-up jump shot, jump shot, driving lay-up, and step-back jump shots. On the other hand, Luka Doncic tends to shoot more step-back jump shots and driving-floating jump shots, while Joel Embiid’s shots mostly consist of jump shots, pull-up jump shots, driving lay-up, and fade-away jump shots.</p>
+</section>
+<section id="analysis-streaks-and-subsequent-shot-attempt" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-streaks-and-subsequent-shot-attempt">Analysis: Streaks and subsequent shot attempt</h2>
+<p>To roughly see how the consecutive shooting streaks impact the next shot, we calculated the probability of making the next shot based on the previous shooting streak. The fluctuation of the line plot will not prove the existence of the hot hand. However, if the hot hand exists, we expect the players to have an increase in their field goal percentage compared to the as they keep making the shots successively.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="HotHand_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The result from the last plot does not illustrate sufficient evidence to conclude that hot hands exist during the game of basketball. However, it gives reasonable and valid evidence to dive into a deeper analysis of the selected players.</p>
+<p>The player who seemed to have a significant increase in slope was Donovan Mitchell. Doncic also had a similar pattern with moderate increase but slightly decreased during the 4 and 5 streak span. Embiid had an incline of the increase until five consecutive field goals but finished with a roughly horizontal slope. On the other hand, Damian Lillard only had the increase until three and also went through a decrease after five streaks.</p>
+</section>
+<section id="modeling-variables" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-variables">Modeling: Variables</h2>
+<p>To test the hypothesis of Hot Hand, we built a model that can represent the original definition of Hot Hand. For this model, we used the variables below:</p>
+<ul>
+<li><p>Response Variable: whether the player made a shot or not.</p></li>
+<li><p>the previous streak of success before attempting the current shot.</p></li>
+<li><p>Last 4 shot percentage of a player.</p></li>
+<li><p>The entire shot percentage before taking a new shot.</p></li>
+</ul>
+<p>As the definition of a Hot Hand is previous successive shots increasing the chance of making the current shot, we created the <em>isShotMadeBinary</em>, indicating whether the player made the attempted shot for our response variable. The code below converts true or false values from <em>isShotMade</em> to 1s and 0s. Then, by using the <em>isShotMadeBinary</em>, we cumulated the successive field goals made as a streak, which is the most crucial term in the definition.</p>
+<div class="cell">
+
+</div>
+<p>The reason why we used the last 4 field goal attempts were because the 1st quantile of players in the league take 4 shots during the entire game. At the same time, players generally need to take at least 4 shots to heat up and eventually have a Hot Hand.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<p>While the contemporary era enables us to measure new types of variables, we also included modern features that could indicate information about a player’s shot. The predictors used in the full model are listed below:</p>
+<ul>
+<li><p>the previous streak of success before attempting the current shot.</p></li>
+<li><p>Last four shot percentage of a player</p></li>
+<li><p>The entire shot percentage before taking a new shot.</p></li>
+<li><p>Distance of a shot</p></li>
+<li><p>Name of a zone on the court</p></li>
+<li><p>Type of a shot</p></li>
+<li><p>The exact location of a shot</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Formula for each model</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>form_def <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">as.factor</span>(isShotMadeBinary) <span class="sc">~</span> streaks<span class="sc">+</span>lastFour<span class="sc">+</span>lastPercentage)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>form_full <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">as.factor</span>(isShotMadeBinary) <span class="sc">~</span> typeAction<span class="sc">+</span>zoneBasic<span class="sc">+</span>locationX<span class="sc">+</span>locationY<span class="sc">+</span>streaks<span class="sc">+</span>lastFour<span class="sc">+</span>lastPercentage<span class="sc">+</span>distanceShot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We used Logistic Regression and Random Forest machine learning algorithms for each model. Thus, as there are four player datasets, we had 16 results at the end.</p>
+</section>
+<section id="model-inference" class="level2">
+<h2 class="anchored" data-anchor-id="model-inference">Model Inference</h2>
+<section id="variable-importance" class="level4">
+<h4 class="anchored" data-anchor-id="variable-importance">Variable importance</h4>
+<p>One of the advantages of Random Forest algorithms is that we can visualize the importance of variables used in the model when predicting the response variable. For all four players, the five most important variables when forecasting were the X and Y coordinates of a location, last percentage, shot distance, and the type of shot. Except for the previous percentage, the other four variables are more related to where the player is shooting. For example, types of shots such as dunk or layup shots are attempts that can only be performed near the basket and can not be from behind the 3-point arc.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = form_def, data = lillard_shots3, ntree = 1000) 
+               Type of random forest: classification
+                     Number of trees: 1000
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 45.88%
+Confusion matrix:
+    0   1 class.error
+0 395 116   0.2270059
+1 329 130   0.7167756</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = form_def, data = doncic_shots3, ntree = 1000) 
+               Type of random forest: classification
+                     Number of trees: 1000
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 47.85%
+Confusion matrix:
+    0   1 class.error
+0 246 353   0.5893155
+1 215 373   0.3656463</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = form_def, data = mitchell_shots3, ntree = 1000) 
+               Type of random forest: classification
+                     Number of trees: 1000
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 53.45%
+Confusion matrix:
+    0   1 class.error
+0 431 156   0.2657581
+1 448  95   0.8250460</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = form_def, data = embiid_shots3, ntree = 1000) 
+               Type of random forest: classification
+                     Number of trees: 1000
+No. of variables tried at each split: 1
+
+        OOB estimate of  error rate: 47.56%
+Confusion matrix:
+   0   1 class.error
+0 64 421   0.8680412
+1 85 494   0.1468048</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="HotHand_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><br>
+</p>
+</section>
+<section id="logistic-regression-summary" class="level4">
+<h4 class="anchored" data-anchor-id="logistic-regression-summary">Logistic Regression summary</h4>
+<p>For inference in Logistic Regression, we had to eliminate the two categorical values from the full model due to a multicollinearity. The final variables below all had the VIFs lower than 10.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>model<span class="ot">&lt;-</span>(<span class="fu">lm</span>(isShotMadeBinary <span class="sc">~</span> locationX<span class="sc">+</span>locationY<span class="sc">+</span>streaks<span class="sc">+</span>lastFour<span class="sc">+</span>lastPercentage<span class="sc">+</span>distanceShot, lillard_shots3))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     locationX      locationY        streaks       lastFour lastPercentage 
+      1.010668       6.365743       1.641844       2.492604       1.823214 
+  distanceShot 
+      6.349815 </code></pre>
+</div>
+</div>
+<p>From the summary results, all four variables used in the definition had high p-values. However, <em>distancShot</em> variable was statistically significant for all four players. Note that as the coefficient is negative, we recognized that as a player shoots further to the basket, the player is likely to miss the shot, i.e., if a player gets closer shot, the player will have a higher chance of making the shot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Logistic Regression Model</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>logistic_model <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glm</span>(<span class="fu">as.factor</span>(isShotMadeBinary) <span class="sc">~</span> locationX<span class="sc">+</span>locationY<span class="sc">+</span>streaks<span class="sc">+</span>lastFour<span class="sc">+</span>lastPercentage<span class="sc">+</span>distanceShot, <span class="at">data =</span> data, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary for each player</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">logistic_model</span>(lillard_shots3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = as.factor(isShotMadeBinary) ~ locationX + locationY + 
+    streaks + lastFour + lastPercentage + distanceShot, family = "binomial", 
+    data = data)
+
+Coefficients:
+                 Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)     0.3906694  0.2222124   1.758  0.07873 . 
+locationX       0.0003836  0.0005689   0.674  0.50010   
+locationY       0.0004659  0.0014557   0.320  0.74891   
+streaks        -0.1188696  0.0787220  -1.510  0.13105   
+lastFour       -0.1838814  0.4493041  -0.409  0.68235   
+lastPercentage  0.8521132  0.5698028   1.495  0.13480   
+distanceShot   -0.0446039  0.0137644  -3.241  0.00119 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1341.9  on 969  degrees of freedom
+Residual deviance: 1277.7  on 963  degrees of freedom
+AIC: 1291.7
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">logistic_model</span>(doncic_shots3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = as.factor(isShotMadeBinary) ~ locationX + locationY + 
+    streaks + lastFour + lastPercentage + distanceShot, family = "binomial", 
+    data = data)
+
+Coefficients:
+                 Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     0.8792303  0.2375265   3.702 0.000214 ***
+locationX      -0.0007423  0.0006962  -1.066 0.286304    
+locationY       0.0031469  0.0017271   1.822 0.068453 .  
+streaks        -0.0114175  0.0618228  -0.185 0.853479    
+lastFour        0.0344512  0.3904303   0.088 0.929687    
+lastPercentage -0.0012444  0.5218119  -0.002 0.998097    
+distanceShot   -0.0895991  0.0167057  -5.363 8.17e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1645.4  on 1186  degrees of freedom
+Residual deviance: 1527.9  on 1180  degrees of freedom
+AIC: 1541.9
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">logistic_model</span>(mitchell_shots3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = as.factor(isShotMadeBinary) ~ locationX + locationY + 
+    streaks + lastFour + lastPercentage + distanceShot, family = "binomial", 
+    data = data)
+
+Coefficients:
+                 Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     0.5934009  0.2182891   2.718  0.00656 ** 
+locationX      -0.0005487  0.0006001  -0.914  0.36059    
+locationY       0.0016517  0.0016048   1.029  0.30336    
+streaks         0.0110233  0.0638392   0.173  0.86291    
+lastFour        0.1658182  0.3861545   0.429  0.66763    
+lastPercentage  0.0022137  0.4770658   0.005  0.99630    
+distanceShot   -0.0630206  0.0148235  -4.251 2.12e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1564.8  on 1129  degrees of freedom
+Residual deviance: 1489.8  on 1123  degrees of freedom
+AIC: 1503.8
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">logistic_model</span>(embiid_shots3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = as.factor(isShotMadeBinary) ~ locationX + locationY + 
+    streaks + lastFour + lastPercentage + distanceShot, family = "binomial", 
+    data = data)
+
+Coefficients:
+                 Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     1.1157763  0.2732759   4.083 4.45e-05 ***
+locationX       0.0003563  0.0009663   0.369   0.7124    
+locationY       0.0042129  0.0022924   1.838   0.0661 .  
+streaks         0.0610837  0.0540952   1.129   0.2588    
+lastFour       -0.3472157  0.4274162  -0.812   0.4166    
+lastPercentage -0.0929673  0.5643240  -0.165   0.8691    
+distanceShot   -0.1050841  0.0222141  -4.731 2.24e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1466.7  on 1063  degrees of freedom
+Residual deviance: 1370.9  on 1057  degrees of freedom
+AIC: 1384.9
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p>Some people might claim that it could be difficult to score if you go closer to the basket, as there is more defense concentrated near the post. However, if a player is on a cold streak and want to find the rhythm to heat up for Hot Hand, shooting closer or driving and penetrating the defense could be a good shooting scheme during the game.</p>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>Overall, we found evidence that Hot Hand may be an illusion based on the data. It turned out that the distance and location were statistically significant for both predicting and inference perspectives. Then, if a player seems to be having a Hot Hand, this might be due to the distance and not the streak of success.</p>
+<p>Therefore, it could be better for gamblers to stop before the next round if they have won consecutive matches at a casino. In basketball terms, it could not be a great idea for a coach to only consider a hot-hand player to shoot the last shot when the game is tied in the final seconds.</p>
+<p>However, Hot hand is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under a statistic domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies.</p>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<ul>
+<li>Bocskocsky, A., Ezekowitz, J., &amp; Stein, C. (2014). Heat check: New evidence on the hot hand in basketball. Retrieved from <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2481494" class="uri">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2481494</a></li>
+<li>Gilovich, T., Vallone, R., &amp; Tversky, A. (1985). The hot hand in basketball: On the misperception of random sequences. Cognitive Psychology, 17(3), 295–314. <a href="doi:https://doi.org/10.1016/0010-0285(85)90010-6" class="uri">doi:https://doi.org/10.1016/0010-0285(85)90010-6</a></li>
+<li>Lantis, R., &amp; Nesson, E. (2021). Hot shots: An analysis of the “Hot hand” in NBA field goal and free throw shooting. Journal of Sports Economics, 22(6), 639–677. <a href="doi:10.1177/15270025211006889" class="uri">doi:10.1177/15270025211006889</a></li>
+<li>Pelechrinis, K., &amp; Winston, W. (2022). The hot hand in the wild. PLOS ONE, 17(1). <a href="doi:10.1371/journal.pone.0261890" class="uri">doi:10.1371/journal.pone.0261890</a></li>
+<li>Sauer, R. D., &amp; Brown, W. O. (1993). Does the Basketball Market Believe in the Hot Hand? Comment. The American Economic Review, 83(5), 1377–1386. <a href="doi:http://www.jstor.org/stable/2117569" class="uri">doi:http://www.jstor.org/stable/2117569</a>.</li>
+</ul>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<p>This project was completed during my master’s degree program. While the original project included components like Machine Learning predictions, I had to exclude a certain amount due to the substantial volume of content.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright © 2023 JeongJune Moon. All Rights Reserved.
+  </li>  
+</ul>
+      </div>
+  </div>
+</footer>
+
+
+
+</body></html>

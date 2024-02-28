@@ -1,0 +1,588 @@
+---
+title: "Does Hot Hand exist?"
+date: 01-2-2023 
+author: JeongJune Moon
+categories: [Basketball]
+image: "hinson.webp"
+---
+![Photo by Lance King/Getty Images](hinson.webp){height=500px}
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+library(nbastatR)
+library(dplyr)
+library(kableExtra)
+library(ggplot2)
+library(ggpubr)
+library(geomtextpath)
+library(tidyverse)
+library(randomForest)
+library(car)
+```
+
+## Introduction 
+The term “hot hand” is a belief originated in basketball that a streak of success temporarily increases the chance of making the next shot. Commentators and fans use such phrases on an athlete who keeps making consecutive shots during the broadcast and also describe that the player is “on fire.”
+This widespread perception was, however, disproved in 1985 by psychologists Thomas Gilovich, Robert Vallone, and Amos Tversky. Gilovich et al. demonstrated that the phenomenon is, in fact, a cognitive illusion by random sequence. For instance, when a person flips a coin ten times, there is a chance of having eight consecutive heads. Nevertheless, it is difficult to conclude that the previous seven heads increased the chance of getting a final head in the last attempt. Thus, Gilovich et al. provided that there is no sufficient evidence for a correlation between successive shots and the chance of making the next shot. Studies have continued to follow up and revived the hot-hand debate in academia. Kostas Pelechrinis, an associate professor of computing and information at Pitt’s School of Computing and Information, claimed that Hot hand exists and “players can indeed get hot in actual live-game situations.”
+This project aims to empirically analyze whether the hot hand exists in the latest NBA season (22-23). The data from modern-era basketball provides a large sample size and better quality in terms of specificity relative to the data used in 1985 by Gilovich et al. Thus, this project expects a better outcome and interpretation of hot hand with a modern dataset of shooting records of renowned NBA players. If the hot hand exists, a coach would be able to know which player should shoot in the last minute of the game when the game is tied. Furthermore, this Hot hand is an interesting theory since it does not only apply to basketball. If the hot hand is not valid, a gambler who keeps winning the game at a casino should know that he will be able to lose all his money in his next bet.
+
+```{r include=F}
+## Acquiring NBA basic player game logs for the 2022-23 Regular Season
+gamedata <- game_logs(seasons = 2023)
+```
+
+```{r results="hide", echo=F}
+# We each obtain player's shot data from their affiliated team's 22-23 season
+lillard_shots <- teams_shots(teams = "Portland Trail Blazers", seasons = 2023) %>%
+  filter(namePlayer == "Damian Lillard")
+# dim(lillard_shots) gives 1202, 27
+
+mitchell_shots <- teams_shots(teams = "Cleveland Cavaliers",seasons = 2023) %>%
+  filter(namePlayer == "Donovan Mitchell")
+# dim(mitchell_shots) gives 1402, 27
+
+doncic_shots <- teams_shots(teams = "Dallas Mavericks",seasons = 2023) %>%
+  filter(namePlayer == "Luka Doncic")
+# dim(doncic_shots) gives 1449, 27
+
+embiid_shots <- PHI_shots <- teams_shots(teams = "Philadelphia 76ers",seasons = 2023) %>%
+  filter(namePlayer == "Joel Embiid")
+# dim(embiid_shots) gives 1328, 27
+```
+
+## Analysis: Identifying the highest points scored in a single Game
+
+Our analysis looks at NBA single-game leaders and records for points during the 2022-23 season, as these NBA players are more likely to make consecutive shots. The code below describes the project sample comprisng the top 5 NBA single-game leaders for points during the 2022-23 season: Damian Lillard (71, 60 points), Donovan Mitchell (71 points), Luka Doncic (60 points) and Joel Embiid (59 points).
+
+Looking at the histogram below, the scores from four players are very extreme values from right-skewed distribution. Two takeaways from this figure were that 1. it is very rare to score above 50 points, and 2. the four players are phenomenal scorers in the NBA.
+
+```{r echo = FALSE}
+# NBA Points in Single Game By Players (2022-23)
+ggplot(gamedata, aes(x=pts))+
+  geom_histogram(color="#ebebeb", fill="#108A99")+
+  ggtitle("NBA Points in Single Game By Players (2022-23)") +
+  xlab("Points In Single Game")+ 
+  ylab("The Number of Games")+
+  annotate("segment", x = sort(gamedata$pts, decreasing = T)[2],
+           xend = sort(gamedata$pts, decreasing = T)[2], 
+           y = 3000, yend = 0,
+           colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
+  geom_text(aes(x=71, label="D.Lillard", y=3200), vjust = -1, size=3)+
+  geom_text(aes(x=71, label="D.Mitchell", y=3000), vjust = -1, size=3)+
+  annotate("segment", x = sort(gamedata$pts, decreasing = T)[3],
+           xend = sort(gamedata$pts, decreasing = T)[3], 
+           y = 2500, yend = 0,
+           colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
+  geom_text(aes(x=63.5, label="L.Doncic", y=2500), 
+            colour="black", vjust = -1, size=3)+
+  geom_text(aes(x=63.5, label="D.Lillard", y=2700), 
+            colour="black", vjust = -1, size=3)+
+  geom_text(aes(x=56, label="J.Embiid", y=1950), 
+            colour="black", vjust = -1, size=3)+
+  annotate("segment", x = sort(gamedata$pts, decreasing = T)[5],
+           xend = sort(gamedata$pts, decreasing = T)[5], 
+           y = 2000, yend = 0,
+           colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
+  annotate("segment", x = mean(gamedata$pts),
+           xend = mean(gamedata$pts), 
+           y = 4000, yend = 0,
+           colour = "dimgrey", size = 0.8, linetype=2) +
+  geom_text(aes(x=mean(gamedata$pts)+6, label="NBA average", y=3700), 
+            colour="black", vjust = -1, size=3)+
+  theme(axis.title.x = element_text(size = 8),
+         axis.title.y = element_text(size = 8),
+         plot.title = element_text(color="black", size=10, face="bold"))
+```
+
+## Analysis: Player's preference
+
+Prior to testing the hot hand hypothesis, we analyzed each player's shot preference. Shot preference indicates where in the court the player prefers to shoot. Many studies have been related to shot locations with the hot hand. Lantis et al. state that "difference in shot location from the previous shot also grows in magnitude for longer streaks of success." We can also make further claims with the result of a hot hand and shot preferences. For instance, if a player is likely to shoot near the post and is identified to have a hot hand, we can also further investigate more players who tend to shoot from similar locations.
+
+```{r echo=F}
+# We acquired the courtPoints.csv from 
+# "https://raw.githubusercontent.com/toddwschneider/ballr/master/plot_court.R" 
+# and saved as CSV file.
+court_points <- read.csv("courtPoints.csv") 
+
+# The function visualizes the shot density using heat map for each player
+shotloc_d<-function(data){
+ court_points <- court_points %>% mutate_if(is.numeric,~.*10) # get from csv
+  ggplot(data, aes(x=locationX, y=locationY+45)) + 
+    stat_density_2d(
+      data = data,
+      aes(x = locationX, y = locationY, fill = stat(density / max(density))),
+      geom = "raster", contour = FALSE, interpolate = TRUE, n = 200,
+      show.legend = TRUE
+    )+
+    geom_path(data = court_points,
+              aes(x = x, y = y-50, group = desc),
+              color = "white")+
+    scale_fill_viridis_c(
+      "Shot Density",
+      option = "C",
+    )+
+    scale_y_continuous(NULL, expand = c(0, 0)) + 
+    scale_x_continuous(NULL, expand = c(0, 0)) + 
+    labs(x="a",
+         y="a",
+         colour="name")+
+    ggtitle(data$namePlayer)+
+    theme(text = element_text(size = 7),
+          plot.title = element_text(size=8, face="bold"),
+          panel.grid = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          legend.text=element_text(size=7))
+}
+```
+
+Here is the shot position data for 4 players:  
+```{r warnings=FALSE, echo=F}
+# Visualization display
+d_lillard<-shotloc_d(lillard_shots)
+d_mitchell<-shotloc_d(mitchell_shots)
+l_doncic<-shotloc_d(doncic_shots)
+j_embiid<-shotloc_d(embiid_shots)
+
+ggarrange(l_doncic, d_lillard, d_mitchell, j_embiid, heights = c(0.7, 0.7, 1, 1),
+          ncol = 2, nrow = 2)
+```
+Using the heatmap, we classified the player's preferred shot locations. For Damian Lillard, the 3-point line and the area under the basket was the most frequent zone for him to shoot. While Donovan Mitchell had a similar pattern with Lillard, on the contrary, Joel Embiid mainly shot from the basket area. Luka Doncic also attempted his shots in the paint area and behind the arc but seemed to have a tendency in the left midrange as well, with the heat stretching more from the basket.
+
+Besides the shot preference, shot types are relevant to the hot hand and can also be a proxy variable for shot difficulty (Bocskocsky et al., 2014). There are various types of shots in basketball: Driving lay-ups, pull-up jump shots, step-back jump shots, etc. We analyzed the most frequent types of shots attempted by each player.
+
+```{r echo=F}
+# The function visualizes the polar chart for shot types for each player
+polar2<-function(data,col,dir){
+  data2<-as.data.frame(sort(table(data$typeAction), decreasing = TRUE)[1:5])
+  data<-data[data$typeAction %in% data2$Var1,]
+  
+  ggplot(data = data2, aes(x = reorder(Var1, Freq), y = Freq)) +
+  geom_bar(
+    mapping = aes(fill=Var1),
+    stat="identity",
+    show.legend = F,
+    width = 0.95
+  ) +
+  theme(
+        axis.text.x = element_text(size=rel(0.65), face='bold'),
+        plot.title = element_text(size=8, face="bold")) +
+    scale_fill_viridis_d(option = col,direction = dir) +
+    ggtitle(data$namePlayer)+
+  labs(x = NULL, y = NULL)+ coord_curvedpolar()
+
+}
+```
+
+```{r echo=F}
+# Coxcomb chart to see the most frequent shot types of each player and the proportion with in a player
+ld2<-polar2(doncic_shots,"E",1)
+dl2<-polar2(lillard_shots,"B",1)
+dm2<-polar2(mitchell_shots,"C",1)
+je2<-polar2(embiid_shots,"D",1)
+
+ggarrange(ld2, dl2, dm2, je2, heights = c(0.7, 0.7, 1, 1),
+          ncol = 2, nrow = 2)
+```
+
+As a result, Damian Lillard and Donovan Mitchell had the same pattern by having the same four types of shots as their most frequent shot types: Pull-up jump shot, jump shot, driving lay-up, and step-back jump shots. On the other hand, Luka Doncic tends to shoot more step-back jump shots and driving-floating jump shots, while Joel Embiid's shots mostly consist of jump shots, pull-up jump shots, driving lay-up, and fade-away jump shots.
+
+## Analysis: Streaks and subsequent shot attempt
+
+To roughly see how the consecutive shooting streaks impact the next shot, we calculated the probability of making the next shot based on the previous shooting streak. The fluctuation of the line plot will not prove the existence of the hot hand. However, if the hot hand exists, we expect the players to have an increase in their field goal percentage compared to the as they keep making the shots successively.
+
+```{r echo=F}
+# We use the mutate function to create new variables: 
+# nowShot, previousShot, and shotPercentage.
+# Variable nowShot means the status of consecutive shots. 
+# For example, before this shot, Lillard makes three consecutive shots. 
+# If he makes the fourth shot, nowShot = 4. 
+# If he does not make the fourth shot, nowShot = -1.
+# Every time Lillard makes one more consecutive shot, nowShot =  nowShot +1. 
+# Every time Lillard misses one more consecutive shot, nowShot = nowShot -1. 
+# Every time Lillard makes one shot while missing previous shots, nowShot = 1. 
+# Every time Lillard misses one shot while making previous shots, nowShot = -1.
+# Variable previousShot means the previous status of consecutive shots. 
+# If Lillard makes the previous two consecutive shots, previousShot = 2. 
+# If Lillard misses the previous two consecutive shots, previousShot = -2.  
+# Variable shotPercentage is the percentage of shots made.
+
+## calculate nowShot and previousShot
+hot_hand_consecutive<-function(data){
+  data <- data %>%
+    select(-slugSeason, -typeGrid, -dateGame, -slugTeamHome, 
+           -slugTeamAway,-numberPeriod, -minutesRemaining, -secondsRemaining) %>%
+    mutate(nowShot = ifelse(isShotMade == TRUE, 1, -1),
+           previousShot = 0,
+           shotPercentage = 0.0)
+  
+  length <- dim(data)[1]
+  i<-1
+  event_id <- 0
+  val  <- 0
+  for (i in 1:length) {
+    if(event_id > data[i,]$idEvent){
+      val <- 0 # which means a new game.
+    }
+    data[i,]$previousShot = val
+    if(val==0){
+      val = ifelse(data[i,]$isShotMade == TRUE, 1, -1)
+    }else{
+      if(data[i,]$isShotMade == TRUE & val > 0){
+        val = val +1
+      }
+      if(data[i,]$isShotMade == FALSE & val < 0){
+        val = val -1
+      }
+      if(data[i,]$isShotMade == TRUE & val < 0){
+        val = 1
+      }
+      if(data[i,]$isShotMade == FALSE & val > 0){
+        val = -1
+      }
+    }
+    data[i,]$nowShot = val
+    event_id <- data[i,]$idEvent
+  }
+  
+  # Calculating percentage
+  count<-0
+  total_shots<-0
+  eventid <- 0
+  for (i in 1:length) {
+    if(eventid > data[i,]$idEvent){
+      count<-0
+      total_shots<-0
+    }
+    if (data[i,]$isShotMade==T){
+      count<-count+1
+      total_shots<-total_shots+1
+      data[i,]$shotPercentage <- round(count/total_shots,3)
+    }
+    else{
+      count<-count
+      total_shots<-total_shots+1
+      data[i,]$shotPercentage <- round(count/total_shots,3)
+    }
+    eventid <- data[i,]$idEvent
+  }
+  
+  return(data)
+}
+
+## get the summary shooting data for 2,3,4,5,6,7 consecutive shoots, and its shooting percentage
+hot_hand_consecutive_summary <- function(data){  
+  data2 <- data %>% filter(previousShot > 0) %>% 
+    group_by(previousShot) %>% 
+    summarise(ShotPercentage=mean(shotPercentage))
+  
+  return(data2)
+}
+
+doncic_final <- hot_hand_consecutive_summary(hot_hand_consecutive(doncic_shots))
+lillard_final <- hot_hand_consecutive_summary(hot_hand_consecutive(lillard_shots))
+mitchell_final <- hot_hand_consecutive_summary(hot_hand_consecutive(mitchell_shots))
+embiid_final <- hot_hand_consecutive_summary(hot_hand_consecutive(embiid_shots))
+```
+
+```{r echo = F}
+# Function to visualize field goal percentage based on consecutive field goals made 
+shot_line<-function(data,title){
+  data$previousShot<-as.factor(data$previousShot)
+  
+  ggplot(data = data) + 
+  xlab("Consecutive Field Goals Made") + 
+  ylab("Field Goal Percentage") + 
+  geom_line(aes(x=previousShot,y = ShotPercentage, group = 1), color = 'darkorange',
+            size=0.6) +
+    geom_point(mapping = aes(x = previousShot, y = ShotPercentage),size=0.7,
+               color = 'darkorange')+
+  scale_y_continuous(limits=c(0,1))+
+  ggtitle(title)+theme(aspect.ratio = 0.5,
+        axis.text = element_text(size=7),
+        axis.title = element_text(size=7),
+        plot.title = element_text(size=8, face="bold"))
+}
+
+sb_doncic<-shot_line(doncic_final,"Luka Doncic")
+sb_lillard<-shot_line(lillard_final,"Damian Lillard")
+sb_mitchell<-shot_line(mitchell_final,"Donovan Mitchell")
+sb_embiid<-shot_line(embiid_final,"Joel Embiid")
+
+ggarrange(sb_doncic, sb_lillard, sb_mitchell, sb_embiid, heights = c(0.7, 0.7, 1, 1),
+          ncol = 2, nrow = 2)
+```
+
+The result from the last plot does not illustrate sufficient evidence to conclude that hot hands exist during the game of basketball. However, it gives reasonable and valid evidence to dive into a deeper analysis of the selected players.
+
+The player who seemed to have a significant increase in slope was Donovan Mitchell. Doncic also had a similar pattern with moderate increase but slightly decreased during the 4 and 5 streak span. Embiid had an incline of the increase until five consecutive field goals but finished with a roughly horizontal slope. On the other hand, Damian Lillard only had the increase until three and also went through a decrease after five streaks.
+
+## Modeling: Variables
+To test the hypothesis of Hot Hand, we built a model that can represent the original definition of Hot Hand. For this model, we used the variables below:
+
+- Response Variable: whether the player made a shot or not.
+
+- the previous streak of success before attempting the current shot.
+- Last 4 shot percentage of a player.
+- The entire shot percentage before taking a new shot.
+
+As the definition of a Hot Hand is previous successive shots increasing the chance of making the current shot, we created the *isShotMadeBinary*, indicating whether the player made the attempted shot for our response variable. The code below converts true or false values from *isShotMade* to 1s and 0s. Then, by using the *isShotMadeBinary*, we cumulated the successive field goals made as a streak, which is the most crucial term in the definition.
+
+```{r echo=F}
+# Response variable
+doncic_shots2<-hot_hand_consecutive(doncic_shots)
+doncic_shots2$isShotMadeBinary <- ifelse(doncic_shots2$isShotMade == TRUE, 1, 0) 
+
+lillard_shots2<-hot_hand_consecutive(lillard_shots)
+lillard_shots2$isShotMadeBinary <- ifelse(lillard_shots2$isShotMade == TRUE, 1, 0)
+
+mitchell_shots2<-hot_hand_consecutive(mitchell_shots)
+mitchell_shots2$isShotMadeBinary <- ifelse(mitchell_shots2$isShotMade == TRUE, 1, 0)
+
+embiid_shots2<-hot_hand_consecutive(embiid_shots)
+embiid_shots2$isShotMadeBinary <- ifelse(embiid_shots2$isShotMade == TRUE, 1, 0)
+
+# Calculates how many streaks a player had before taking a current shot
+streaks <- function(data){
+  count <- 0
+  streakslist<-c(0)
+  for (i in 1:nrow(data)){
+    if (data$isShotMadeBinary[i]==1){
+      count <- count +1
+      streakslist<-append(streakslist,as.numeric(count))
+    }
+    else if (data$isShotMadeBinary[i]==0){
+      count <- 0
+      streakslist<-append(streakslist,as.numeric(count))
+    }
+  }
+  streakslist<-head(streakslist,-1)
+  return(as.numeric(streakslist))
+}
+
+# Streak automatically have to reset after each game.
+# Using function 'streaks' to apply on each game
+
+streaks2<-function(data){
+  streaklist<-c()
+  for (i in unique(data$idGame)){
+    data2<-data %>% filter(idGame==i)
+    streaklist<-append(streaklist,streaks(data2))
+  }
+  return(streaklist)
+}
+```
+
+The reason why we used the last 4 field goal attempts were because the 1st quantile of players in the league take 4 shots during the entire game. At the same time, players generally need to take at least 4 shots to heat up and eventually have a Hot Hand. 
+
+
+```{r echo=F}
+# Calculates the field goal percentage of previous four shots
+lastFour<-function(data){
+  list1<-c()
+  for (i in unique(data$idGame)){
+    data2<-data %>% filter(idGame==i)
+    list2<-c()
+    for (j in 1:nrow(data2)){
+      if (j==1|j==2|j==3|j==4){
+        list2<-append(list2,NA)
+      }
+      else{
+        list2<-append(list2,round(sum(data2$isShotMadeBinary[(j-4):(j-1)])/
+                     length(data2$isShotMadeBinary[(j-4):(j-1)]),3))
+      }
+    }
+    list1<-append(list1,list2)
+  }
+  return(list1)
+}
+
+
+
+# Calculates the previous field goal percentage before taking the current shot 
+lastPercentage<-function(data){
+  list1<-c()
+  for (i in unique(data$idGame)){
+    data2<-data %>% filter(idGame==i)
+    list2<-c()
+    for (j in 1:nrow(data2)){
+      if (j==1){
+        list2<-append(list2,0)
+      }
+      else{
+        list2<-append(list2,round(sum(data2$isShotMadeBinary[1:j-1])/
+                     length(data2$isShotMadeBinary[1:j-1]),3))
+      }
+    }
+    list1<-append(list1,list2)
+  }
+  return(list1)
+}
+
+```
+
+```{r echo=F}
+# Creating as a new variable for Luka Doncic
+doncic_shots2$streaks<-streaks2(doncic_shots2)
+doncic_shots2$lastFour<-lastFour(doncic_shots2)
+doncic_shots2$lastPercentage<-lastPercentage(doncic_shots2)
+
+# NA values will be removed 
+doncic_shots3<-doncic_shots2 %>% drop_na(streaks, lastFour, lastPercentage)
+
+
+# Creating as a new variable for Damian Lillard
+lillard_shots2$streaks<-streaks2(lillard_shots2)
+lillard_shots2$lastFour<-lastFour(lillard_shots2)
+lillard_shots2$lastPercentage<-lastPercentage(lillard_shots2)
+
+# NA values will be removed 
+lillard_shots3<-lillard_shots2 %>% drop_na(streaks, lastFour, lastPercentage)
+
+
+# Creating as a new variable for mitchell
+mitchell_shots2$streaks<-streaks2(mitchell_shots2)
+mitchell_shots2$lastFour<-lastFour(mitchell_shots2)
+mitchell_shots2$lastPercentage<-lastPercentage(mitchell_shots2)
+
+# NA values will be removed 
+mitchell_shots3<-mitchell_shots2 %>% drop_na(streaks, lastFour,lastPercentage)
+
+
+# Creating as a new variable for embiid
+embiid_shots2$streaks<-streaks2(embiid_shots2)
+embiid_shots2$lastFour<-lastFour(embiid_shots2)
+embiid_shots2$lastPercentage<-lastPercentage(embiid_shots2)
+
+# NA values will be removed 
+embiid_shots3<-embiid_shots2 %>% drop_na(streaks, lastFour,lastPercentage)
+```
+
+
+While the contemporary era enables us to measure new types of variables, we also included modern features that could indicate information about a player's shot. The predictors used in the full model are listed below:
+
+- the previous streak of success before attempting the current shot.
+- Last four shot percentage of a player
+- The entire shot percentage before taking a new shot.
+
+- Distance of a shot
+- Name of a zone on the court
+- Type of a shot
+- The exact location of a shot
+
+```{r}
+# Formula for each model
+form_def <- as.formula(as.factor(isShotMadeBinary) ~ streaks+lastFour+lastPercentage)
+
+form_full <- as.formula(as.factor(isShotMadeBinary) ~ typeAction+zoneBasic+locationX+locationY+streaks+lastFour+lastPercentage+distanceShot)
+```
+
+We used Logistic Regression and Random Forest machine learning algorithms for each model. Thus, as there are four player datasets, we had 16 results at the end.
+
+
+## Model Inference 
+
+#### Variable importance 
+
+One of the advantages of Random Forest algorithms is that we can visualize the importance of variables used in the model when predicting the response variable. For all four players, the five most important variables when forecasting were the X and Y coordinates of a location, last percentage, shot distance, and the type of shot. Except for the previous percentage, the other four variables are more related to where the player is shooting. For example, types of shots such as dunk or layup shots are attempts that can only be performed near the basket and can not be from behind the 3-point arc. 
+
+
+```{r echo=F}
+# Lillard
+mod_forest1 <- randomForest(formula=form_def, data=lillard_shots3, ntree = 1000) ; mod_forest1
+# Doncic
+mod_forest2 <- randomForest(formula=form_def, data=doncic_shots3, ntree = 1000) ; mod_forest2
+# Mitchell
+mod_forest3 <- randomForest(formula=form_def, data=mitchell_shots3, ntree = 1000) ; mod_forest3
+# Embiid
+mod_forest4 <- randomForest(formula=form_def, data=embiid_shots3, ntree = 1000) ; mod_forest4
+```
+
+```{r echo=F}
+# Creating a data frame with importance values
+importance <- as.data.frame(mod_forest1$importance)
+importance <- cbind(vars=rownames(importance), importance)
+importance <- importance[order(importance$MeanDecreaseGini),]
+importance$vars <- factor(importance$vars, levels=unique(importance$vars))
+
+# Plot
+importance_plot<-function(classifier,Title){
+  importance <- as.data.frame(classifier$importance)
+  importance <- cbind(vars=rownames(importance), importance)
+  importance <- importance[order(importance$MeanDecreaseGini),]
+  importance$vars <- factor(importance$vars, levels=unique(importance$vars))
+  
+  importance %>% 
+    pivot_longer(cols=matches("Mean")) %>% 
+    ggplot(aes(value, vars)) +
+    geom_col(col="#ebebeb",fill="darkorange") +
+    geom_text(aes(label=round(value), x=0.5*value), size=2, colour="white") +
+    facet_grid(. ~ name, scales="free_x") +
+    scale_x_continuous(expand=expansion(c(0,0.04))) +
+    labs(title = Title,
+         x = "", y = "Variables")+
+    theme(axis.text = element_text(size=7),
+          plot.title = element_text(size=8, face="bold"),
+          axis.title.x = element_text(size = 8),
+          axis.title.y = element_text(size = 8))
+}
+
+ld<-importance_plot(mod_forest2,"Luka Doncic")
+dl<-importance_plot(mod_forest1,"Damian Lillard")
+dm<-importance_plot(mod_forest3,"Donovan Mitchell")
+je<-importance_plot(mod_forest4,"Joel Embiid")
+
+ggarrange(ld,dl,dm, je, heights = c(0.7, 0.7, 1, 1),
+          ncol = 2, nrow = 2)
+```
+\
+
+#### Logistic Regression summary
+
+For inference in Logistic Regression, we had to eliminate the two categorical values from the full model due to a multicollinearity. The final variables below all had the VIFs lower than 10.
+
+```{r}
+# VIF
+model<-(lm(isShotMadeBinary ~ locationX+locationY+streaks+lastFour+lastPercentage+distanceShot, lillard_shots3))
+vif(model)
+```
+
+From the summary results, all four variables used in the definition had high p-values. However, *distancShot* variable was statistically significant for all four players. Note that as the coefficient is negative, we recognized that as a player shoots further to the basket, the player is likely to miss the shot, i.e., if a player gets closer shot, the player will have a higher chance of making the shot.
+
+```{r}
+# Logistic Regression Model
+logistic_model <- function(data){
+  glm(as.factor(isShotMadeBinary) ~ locationX+locationY+streaks+lastFour+lastPercentage+distanceShot, data = data, family = "binomial")
+  }
+ 
+# Summary for each player
+summary(logistic_model(lillard_shots3))
+summary(logistic_model(doncic_shots3))
+summary(logistic_model(mitchell_shots3))
+summary(logistic_model(embiid_shots3))
+```
+
+Some people might claim that it could be difficult to score if you go closer to the basket, as there is more defense concentrated near the post. However, if a player is on a cold streak and want to find the rhythm to heat up for Hot Hand, shooting closer or driving and penetrating the defense could be a good shooting scheme during the game.
+
+
+## Discussion
+
+Overall, we found evidence that Hot Hand may be an illusion based on the data. It turned out that the distance and location were statistically significant for both predicting and inference perspectives. Then, if a player seems to be having a Hot Hand, this might be due to the distance and not the streak of success. 
+
+Therefore, it could be better for gamblers to stop before the next round if they have won consecutive matches at a casino. In basketball terms, it could not be a great idea for a coach to only consider a hot-hand player to shoot the last shot when the game is tied in the final seconds.
+
+However, Hot hand is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under a statistic domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies. 
+
+
+
+## Reference
+
+-   Bocskocsky, A., Ezekowitz, J., & Stein, C. (2014). Heat check: New evidence on the hot hand in basketball. Retrieved from <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2481494>
+-   Gilovich, T., Vallone, R., & Tversky, A. (1985). The hot hand in basketball: On the misperception of random sequences. Cognitive Psychology, 17(3), 295--314. [doi:https://doi.org/10.1016/0010-0285(85)90010-6](doi:https://doi.org/10.1016/0010-0285(85)90010-6){.uri}
+-   Lantis, R., & Nesson, E. (2021). Hot shots: An analysis of the "Hot hand" in NBA field goal and free throw shooting. Journal of Sports Economics, 22(6), 639--677. <doi:10.1177/15270025211006889>
+-   Pelechrinis, K., & Winston, W. (2022). The hot hand in the wild. PLOS ONE, 17(1). <doi:10.1371/journal.pone.0261890>
+-   Sauer, R. D., & Brown, W. O. (1993). Does the Basketball Market Believe in the Hot Hand? Comment. The American Economic Review, 83(5), 1377--1386. <doi:http://www.jstor.org/stable/2117569>.
+
+
+## \n
+
+This project was completed during my master's degree program. While the original project included components like Machine Learning predictions, I had to exclude a certain amount due to the substantial volume of content. 

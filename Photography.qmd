@@ -4,7 +4,7 @@ filters:
    - lightbox
 lightbox: auto
 ---
-This is a place where I archive my photos. These are the ones I would likely select for a future photobook if I get a chance to publish one.
+This is a place where I archive my photos. 
 
 
 ::: {style="display: grid;grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));grid-gap: 1em;"}
