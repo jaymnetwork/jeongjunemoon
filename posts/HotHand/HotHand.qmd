@@ -54,6 +54,14 @@ embiid_shots <- PHI_shots <- teams_shots(teams = "Philadelphia 76ers",seasons = 
 
 Our analysis looks at NBA single-game leaders and records for points during the 2022-23 season, as these NBA players are more likely to make consecutive shots. The code below describes the project sample comprisng the top 5 NBA single-game leaders for points during the 2022-23 season: Damian Lillard (71, 60 points), Donovan Mitchell (71 points), Luka Doncic (60 points) and Joel Embiid (59 points).
 
+```{r}
+kable(gamedata %>% arrange(desc(pts)) %>%
+mutate(gameResult=ifelse(outcomeGame=="W","Win","Lose")) %>%
+select(dateGame, nameTeam, slugOpponent, namePlayer,pts,gameResult) %>%
+head(5))
+```
+
+
 Looking at the histogram below, the scores from four players are very extreme values from right-skewed distribution. Two takeaways from this figure were that 1. it is very rare to score above 50 points, and 2. the four players are phenomenal scorers in the NBA.
 
 ```{r echo = FALSE}

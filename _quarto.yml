@@ -16,11 +16,6 @@ website:
     logo: "images/kapoor.jpg"
     href: index.qmd
 
-    
-    # left:
-    #   - text: JeongJune Moon
-    #     href: index.qmd
-
         
     right:
       - text: ABOUT
