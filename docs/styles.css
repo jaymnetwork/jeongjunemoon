@@ -280,5 +280,5 @@ pre code {
 
 .cell-output-display:not(.no-overflow-x) {
     overflow-x: auto;
-    font-size: 14px;
+    font-size: 14px !important;
 }
