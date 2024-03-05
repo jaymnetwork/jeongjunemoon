@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="JeongJune Moon">
-<meta name="dcterms.date" content="2023-01-02">
+<meta name="dcterms.date" content="2023-12-02">
 
 <title>Does Hot Hand exist?</title>
 <style>
@@ -215,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2023</p>
+      <p class="date">December 2, 2023</p>
     </div>
   </div>
   
@@ -243,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Our analysis looks at NBA single-game leaders and records for points during the 2022-23 season, as these NBA players are more likely to make consecutive shots. The code below describes the project sample comprisng the top 5 NBA single-game leaders for points during the 2022-23 season: Damian Lillard (71, 60 points), Donovan Mitchell (71 points), Luka Doncic (60 points) and Joel Embiid (59 points).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(gamedata <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(pts)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">gameResult=</span><span class="fu">ifelse</span>(outcomeGame<span class="sc">==</span><span class="st">"W"</span>,<span class="st">"Win"</span>,<span class="st">"Lose"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">gameResult=</span><span class="fu">ifelse</span>(outcomeGame<span class="sc">==</span><span class="st">"W"</span>,<span class="st">"Win"</span>,<span class="st">"Loss"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(dateGame, nameTeam, slugOpponent, namePlayer,pts,gameResult) <span class="sc">%&gt;%</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -520,13 +520,13 @@ glm(formula = as.factor(isShotMadeBinary) ~ locationX + locationY +
 
 Coefficients:
                  Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)     1.1190077  0.2733987   4.093 4.26e-05 ***
-locationX       0.0003527  0.0009664   0.365    0.715    
-locationY       0.0042144  0.0022926   1.838    0.066 .  
-streaks         0.0632635  0.0541367   1.169    0.243    
-lastFour       -0.3654828  0.4274932  -0.855    0.393    
-lastPercentage -0.0846816  0.5642019  -0.150    0.881    
-distanceShot   -0.1051392  0.0222175  -4.732 2.22e-06 ***
+(Intercept)     1.1190221  0.2733978   4.093 4.26e-05 ***
+locationX       0.0003528  0.0009664   0.365    0.715    
+locationY       0.0042142  0.0022926   1.838    0.066 .  
+streaks         0.0632705  0.0541368   1.169    0.243    
+lastFour       -0.3660486  0.4275186  -0.856    0.392    
+lastPercentage -0.0841544  0.5642315  -0.149    0.881    
+distanceShot   -0.1051383  0.0222175  -4.732 2.22e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -560,7 +560,7 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </section>
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
-<p>This project was completed during my master’s degree program. While the original project included components like Machine Learning predictions, I had to exclude a certain amount due to the substantial volume of content.</p>
+<p>This project was completed during my master’s degree program. While the original project included components like Machine Learning predictions and model tuning, I had to exclude a certain amount due to the substantial volume of content.</p>
 
 
 </section>
