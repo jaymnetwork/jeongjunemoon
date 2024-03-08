@@ -1,7 +1,7 @@
 ---
 title: "Publications"
 ---
-- Philsoo Kim, SangHyun Lee, JeongJun Moon (2024). Evaluating the Operational Efficiency of NBA Teams on Franchise Value: An Assessment of Data Envelopment Analysis. Plos One. – FORTHCOMING
+- Philsoo Kim, SangHyun Lee, JeongJun Moon (2024). Evaluating the Operational Efficiency of NBA Teams on Franchise Value: An Assessment of Data Envelopment Analysis. Plos One. [https://doi.org/10.1371/journal.pone.0297797](https://doi.org/10.1371/journal.pone.0297797)
 
 - SangHyun Lee, JeongJun Moon, Philsoo Kim (2023). When Does Losing Lead to Winning? An Empirical Investigation on the Korean Professional Basketball League. Korean Journal of Sport Science. 
 [https://doi.org/10.24985/kjss.2023.34.4.618](https://doi.org/10.24985/kjss.2023.34.4.618)
