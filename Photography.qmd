@@ -13,7 +13,7 @@ This is a place where I archive my photos.
 
 ![](images/IMG_8890.JPG){group="my-gallery"}
 
-![](images/IMG_8270.JPG){group="my-gallery"}
+![](images/IMG_8948.jpg){group="my-gallery"}
 
 ![](images/IMG_7969.jpg){group="my-gallery"}
 
