@@ -11,11 +11,13 @@ This is a place where I archive my photos.
 
 ![](images/IMG_7934.JPG){group="my-gallery"}
 
-![](images/IMG_8067.JPG){group="my-gallery"}
+![](images/IMG_8890.JPG){group="my-gallery"}
+
+![](images/IMG_8270.JPG){group="my-gallery"}
 
 ![](images/IMG_7969.jpg){group="my-gallery"}
 
-![](images/16940017.JPG){group="my-gallery"}
+![](images/IMG_8067.JPG){group="my-gallery"}
 
 ![](images/000001540022.JPG){group="my-gallery"}
 

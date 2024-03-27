@@ -27,9 +27,9 @@ library(igraph)
 
 Data is evolving, and so is data in sports. For basketball, it began with basic metrics gleaned from the box score: points, rebounds, assists, and etc. Over time, these traditional statistics transformed into advanced metrics like Player Efficiency Rating and Win Shares. Now, in the contemporary era of basketball, data is being measured and quantified with cutting-edge technologies such as wearables and video cameras.
 
-In contemporary basketball analytics, one invaluable dataset is play-by-play (PBP) data. This detailed resource captures every play along with its corresponding time during a basketball game. PBP data is accessible for leagues like the NBA, WNBA, and NCAA. However, when it comes to the Korean Basketball League (KBL), only box score data is currently available on the KBL website. 
+In contemporary basketball analytics, one of the powerful dataset is play-by-play (PBP) data. This detailed resource captures every play along with its corresponding time during a basketball game. PBP data is accessible for leagues like the NBA, WNBA, and NCAA. However, when it comes to the Korean Basketball League (KBL), only box score data is currently available on the KBL website. 
 
-While replicating the high-quality PBP data of leagues like the NBA, WNBA, and NCAA for the KBL can be challenging, there are still alternative methods to compile such data. One approach involves utilizing web scraping techniques to extract information from real-time text updates provided by KBL and platforms like 'Naver.' These updates via text offer descriptions of plays, which allow us to have a rudimentary form of PBP data for further analysis and study.
+While replicating the high-quality PBP data of leagues like the NBA, WNBA, and NCAA for the KBL can be challenging, there are still alternative methods to compile such data. One approach involves utilizing web scraping techniques to extract information from real-time text updates provided by KBL and platforms like 'NAVER.' These updates via text offer descriptions of plays, which allow us to have a rudimentary form of PBP data for further analysis and study after cleansing.
 
 
 ## Game Excitement Index & Win Probability
@@ -44,6 +44,8 @@ $T$ in the formula represents the time remaining in the game. $n$ indicates how 
 
 To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons.
 
+The training data for this project's model spanned from October 23, 2023, to March 14, 2024, encompassing a total of 165,266 plays in the dataset. To test the model, games scheduled after March 14, 2024, were utilized for the prediction.
+
 ```{r include=F}
 # Reading Data
 pbp <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp.xlsx")
@@ -55,7 +57,6 @@ pbp_test <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp_test.xlsx")
 pbp2<- pbp %>% filter(game_id!="S43G01N90")
 pbp_test <- pbp_test %>% filter(game_id=="S43G01N252")
 ```
-
 
 
 ```{r include=F}
