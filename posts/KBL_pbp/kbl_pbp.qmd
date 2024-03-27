@@ -25,7 +25,7 @@ library(igraph)
 
 ## Introduction 
 
-Data is evolving, and so is data in sports. For basketball, it began with basic metrics gleaned from the box score: points, rebounds, assists, and etc. Over time, these traditional statistics evolved into advanced metrics like Player Efficiency Rating and Win Shares. Now, in the contemporary era of basketball, data is being measured and quantified with cutting-edge technologies such as wearables and video cameras.
+Data is evolving, and so is data in sports. For basketball, it began with basic metrics gleaned from the box score: points, rebounds, assists, and etc. Over time, these traditional statistics transformed into advanced metrics like Player Efficiency Rating and Win Shares. Now, in the contemporary era of basketball, data is being measured and quantified with cutting-edge technologies such as wearables and video cameras.
 
 In contemporary basketball analytics, one invaluable dataset is play-by-play (PBP) data. This detailed resource captures every play along with its corresponding time during a basketball game. PBP data is accessible for leagues like the NBA, WNBA, and NCAA. However, when it comes to the Korean Basketball League (KBL), only box score data is currently available on the KBL website. 
 
@@ -42,7 +42,7 @@ $$
 
 $T$ in the formula represents the time remaining in the game. $n$ indicates how many number of plays has been executed, and $p_i$ is the winning probability of home team on $i$th play of the game.
 
-To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variable in this project was excluded due to personal reasons.
+To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons.
 
 ```{r include=F}
 # Reading Data
@@ -524,7 +524,9 @@ kbl_wp_chart(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labe
 kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)
 ```
 
-The visualization function heavily relies on the 'ncaahoopR' package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances.
+Evaluating the accuracy of a model may not be feasible, as we can not know whether the team won or not during the game. Nonetheless, it's still worth noting that the models displayed reasonable performance by predicting approximately 50% prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.
+
+The visualization function heavily relies on the 'ncaahoopR' package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances. 
 
 ```{r include=F}
 pbp_test <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp_test.xlsx")
@@ -543,6 +545,8 @@ grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
 ```
 
 The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest demonstrated a relatively higher variability compared to the other three. Notably, due to this increased variability, the GEI of the Random Forest model was the highest among the four models.
+
+The models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds. However, there remains a potential to amplify these models by including additional variables, such as the team's shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team.
 
 ```{r include=F}
 add_assist <- function(data){
@@ -638,19 +642,22 @@ kbl_assist_net <- function(data, team_select, random, top=10,col="orange"){
 
 ## Assist Network Analysis
 
+Another intriguing application for play-by-play data is assist network analysis, which visualizes the connections between players based on assist frequency. Although assist network is also presented in the package by Benz, a new iteration had to be developed due to data incompatibility. At the same time, the main objective of this visualization was to enhance readability. As the data spans an entire season, it can become challenging to interpret, potentially reducing its usefulness for stakeholders.
+
 ```{r}
 kbl_assist_net(data=pbp2, team_select="서울 삼성",random=14,top=13,"lightblue")
 ```
-
-Another intriguing application for play-by-play data is assist network analysis, which visualizes the connections between players based on assist frequency. In the analysis presented above, it's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Seoul Samsung(서울 삼성) from 2023-10-22 to 2024-03-14. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL.
+In the analysis presented above, it's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Seoul Samsung(서울 삼성) from 2023-10-22 to 2024-03-14. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball.
 
 
 ## Discussion
 
-ESPN has already implemented a winning probability chart on their website, enabling fans to interact with the data and understand how each play impacts the game's outcome. Likewise, assist network analysis provides practical insights not only for players and coaches in game preparation but also for fans to grasp the dynamics of passing distribution among players. This project manifests the value of such insights, as seen in leagues like the NBA, WNBA, and NCAA. Therefore, it is reasonable to anticipate that the KBL will also adopt similar analyses using play-by-play data, thereby enriching fan engagement with compelling insights into the game.
+Sports platforms like ESPN has already implemented a winning probability chart on their website, enabling fans to interact with the data and understand how each play impacts the game's outcome. Likewise, assist network analysis provides practical insights not only for players and coaches in game preparation but also for fans to grasp the dynamics of passing distribution among players. This project manifests the value of such insights, as seen in leagues like the NBA, WNBA, and NCAA. Therefore, it is reasonable to anticipate that the KBL will also adopt similar analyses using play-by-play data, thereby enriching fan engagement with compelling insights into the game.
 
 
+## \n
 
+This project is also in the process of releasing as an R package to contribute in Korean basketball analytics.
 
 
 
