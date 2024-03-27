@@ -2,7 +2,7 @@
 title: "Does Hot Hand exist?"
 date: 12-2-2023 
 author: JeongJune Moon
-categories: [Basketball]
+categories: [NBA]
 image: "hinson.webp"
 ---
 ![Photo by Lance King | Getty Images](hinson.webp){height=500px}
@@ -51,7 +51,7 @@ embiid_shots <- PHI_shots <- teams_shots(teams = "Philadelphia 76ers",seasons = 
 # dim(embiid_shots) gives 1328, 27
 ```
 
-## Analysis: Identifying the highest points scored in a single Game
+## Identifying the Highest Points Scored In a Single Game
 
 Our analysis looks at NBA single-game leaders and records for points during the 2022-23 season, as these NBA players are more likely to make consecutive shots. The code below describes the project sample comprisng the top 5 NBA single-game leaders for points during the 2022-23 season: Damian Lillard (71, 60 points), Donovan Mitchell (71 points), Luka Doncic (60 points) and Joel Embiid (59 points).
 
@@ -103,7 +103,7 @@ ggplot(gamedata, aes(x=pts))+
          plot.title = element_text(color="black", size=10, face="bold"))
 ```
 
-## Analysis: Player's preference
+## Player's Preference
 
 Prior to testing the hot hand hypothesis, we analyzed each player's shot preference. Shot preference indicates where in the court the player prefers to shoot. Many studies have been related to shot locations with the hot hand. Lantis et al. state that "difference in shot location from the previous shot also grows in magnitude for longer streaks of success." We can also make further claims with the result of a hot hand and shot preferences. For instance, if a player is likely to shoot near the post and is identified to have a hot hand, we can also further investigate more players who tend to shoot from similar locations.
 
@@ -196,7 +196,7 @@ ggarrange(ld2, dl2, dm2, je2, heights = c(0.7, 0.7, 1, 1),
 
 As a result, Damian Lillard and Donovan Mitchell had the same pattern by having the same four types of shots as their most frequent shot types: Pull-up jump shot, jump shot, driving lay-up, and step-back jump shots. On the other hand, Luka Doncic tends to shoot more step-back jump shots and driving-floating jump shots, while Joel Embiid's shots mostly consist of jump shots, pull-up jump shots, driving lay-up, and fade-away jump shots.
 
-## Analysis: Streaks and subsequent shot attempt
+## Analysis: Streaks and Subsequent Shot Attempt
 
 To roughly see how the consecutive shooting streaks impact the next shot, we calculated the probability of making the next shot based on the previous shooting streak. The fluctuation of the line plot will not prove the existence of the hot hand. However, if the hot hand exists, we expect the players to have an increase in their field goal percentage compared to the as they keep making the shots successively.
 
@@ -491,7 +491,7 @@ We used Logistic Regression and Random Forest machine learning algorithms for ea
 
 ## Model Inference 
 
-#### Variable importance 
+#### Variable Importance 
 
 One of the advantages of Random Forest algorithms is that we can visualize the importance of variables used in the model when predicting the response variable. For all four players, the five most important variables when forecasting were the X and Y coordinates of a location, last percentage, shot distance, and the type of shot. Except for the previous percentage, the other four variables are more related to where the player is shooting. For example, types of shots such as dunk or layup shots are attempts that can only be performed near the basket and can not be from behind the 3-point arc. 
 
@@ -546,7 +546,7 @@ ggarrange(ld,dl,dm, je, heights = c(0.7, 0.7, 1, 1),
 ```
 \
 
-#### Logistic Regression summary
+#### Logistic Regression Summary
 
 For inference in Logistic Regression, we had to eliminate the two categorical values from the full model due to a multicollinearity. The final variables below all had the VIFs lower than 10.
 
@@ -580,7 +580,7 @@ Overall, we found evidence that Hot Hand may be an illusion based on the data. I
 
 Therefore, it could be better for gamblers to stop before the next round if they have won consecutive matches at a casino. In basketball terms, it could not be a great idea for a coach to only consider a hot-hand player to shoot the last shot when the game is tied in the final seconds.
 
-However, Hot hand is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under a statistic domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies. 
+However, Hot hand is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under the statistics domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies. 
 
 
 

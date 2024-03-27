@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="JeongJune Moon">
+<meta name="dcterms.date" content="2024-03-14">
 
-<title>[Project in progress…]</title>
+<title>Play-by-Play data for Korean Basketball League</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -123,6 +124,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 <link rel="stylesheet" href="lightbox.css">
@@ -194,9 +196,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">[Project in progress…]</h1>
+<h1 class="title">Play-by-Play data for Korean Basketball League</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">NCAA</div>
+    <div class="quarto-category">KBL</div>
   </div>
   </div>
 
@@ -214,7 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 1, 1111</p>
+      <p class="date">March 14, 2024</p>
     </div>
   </div>
   
@@ -226,54 +228,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="GettyImages-52453961-1024x668.jpeg" height="500" class="figure-img"></p>
-<p></p><figcaption class="figure-caption">Photo by Jonathan Ferrey | Getty Images</figcaption><p></p>
+<p><img src="kbl.jpeg" height="500" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Photo from bravo my life magazine</figcaption><p></p>
 </figure>
 </div>
-<section id="this-project-is-currently-in-progress" class="level3">
-<h3 class="anchored" data-anchor-id="this-project-is-currently-in-progress">This project is currently in progress</h3>
-<p>This project is currently in progress.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Data is evolving, and so is data in sports. For basketball, it began with basic metrics gleaned from the box score: points, rebounds, assists, and etc. Over time, these traditional statistics evolved into advanced metrics like Player Efficiency Rating and Win Shares. Now, in the contemporary era of basketball, data is being measured and quantified with cutting-edge technologies such as wearables and video cameras.</p>
+<p>In contemporary basketball analytics, one invaluable dataset is play-by-play (PBP) data. This detailed resource captures every play along with its corresponding time during a basketball game. PBP data is accessible for leagues like the NBA, WNBA, and NCAA. However, when it comes to the Korean Basketball League (KBL), only box score data is currently available on the KBL website.</p>
+<p>While replicating the high-quality PBP data of leagues like the NBA, WNBA, and NCAA for the KBL can be challenging, there are still alternative methods to compile such data. One approach involves utilizing web scraping techniques to extract information from real-time text updates provided by KBL and platforms like ‘Naver.’ These updates via text offer descriptions of plays, which allow us to have a rudimentary form of PBP data for further analysis and study.</p>
+</section>
+<section id="game-excitement-index-win-probability" class="level2">
+<h2 class="anchored" data-anchor-id="game-excitement-index-win-probability">Game Excitement Index &amp; Win Probability</h2>
+<p>PBP data opens up numerous possibilities for analysis and insights. One intriguing concepts is the Game Excitement Index (GEI) introduced by <a href="https://sports.sites.yale.edu/ncaa-basketball-game-excitement-index">Luke Benz</a>. GEI seeks to conceptualize how the excitement level of a game after the game has ended. Benz explains that “it’s a predictive metric, attempting to forecast how exciting a game might be. Following formula shows how GEI can be computed:</p>
+<p><span class="math display">\[
+\Large{GEI = \frac{2400}{T} \sum_{i=2}^{n} |p_i - p_{i-1}|}
+\]</span></p>
+<p><span class="math inline">\(T\)</span> in the formula represents the time remaining in the game. <span class="math inline">\(n\)</span> indicates how many number of plays has been executed, and <span class="math inline">\(p_i\)</span> is the winning probability of home team on <span class="math inline">\(i\)</span>th play of the game.</p>
+<p>To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variable in this project was excluded due to personal reasons.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Acquiring shot data for every team</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># nbaShots_2023&lt;-teams_shots(teams = c(unique(gamedata$nameTeam),"Los Angeles Clippers"),seasons = 2023)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart_new</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The visualization function heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Data to train for classification</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># nbaShots&lt;-nbaShots_2023 %&gt;% group_by(namePlayer,idPlayer,yearSeason,zoneBasic,</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      nameZone,typeAction) %&gt;%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarise(count=n(),.groups = 'drop') %&gt;%</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   pivot_wider(names_from = c(zoneBasic,nameZone,typeAction), values_from = count, values_fill = 0) %&gt;%</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   as.data.frame()</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># nbaShots$totalShots &lt;- rowSums(nbaShots[, -(1:3)])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest demonstrated a relatively higher variability compared to the other three. Notably, due to this increased variability, the GEI of the Random Forest model was the highest among the four models.</p>
+</section>
+<section id="assist-network-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="assist-network-analysis">Assist Network Analysis</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(nbaShots$totalShots)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># nbaShots&lt;-nbaShots[nbaShots$totalShots &gt;= 303,]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_assist_net</span>(<span class="at">data=</span>pbp2, <span class="at">team_select=</span><span class="st">"서울 삼성"</span>,<span class="at">random=</span><span class="dv">14</span>,<span class="at">top=</span><span class="dv">13</span>,<span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ## K-means clustering to classify players</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># # Sample data </span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># nbaShots &lt;- nbaShots[, -c(1,2, 3)]</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># nbaShots &lt;- model.matrix(~ . - 1, nbaShots)</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># # Perform k-means clustering</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># # Number of clusters</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># k &lt;- 3  </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># kmeans_result &lt;- kmeans(nbaShots, centers = k)</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># # Cluster centroids</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># centroids &lt;- kmeans_result$centers</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># # Cluster assignments </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># cluster_assignments &lt;- kmeans_result$cluster</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># # Plot </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(nbaShots, col = cluster_assignments, pch = 19, main = "K-Means Clustering")</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># # Adding centroids to the plot</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># points(centroids, col = 1:k, pch = 8, cex = 2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Another intriguing application for play-by-play data is assist network analysis, which visualizes the connections between players based on assist frequency. In the analysis presented above, it’s evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Seoul Samsung(서울 삼성) from 2023-10-22 to 2024-03-14. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)’s total, who currently ranks at third in most points averaged in the KBL.</p>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>ESPN has already implemented a winning probability chart on their website, enabling fans to interact with the data and understand how each play impacts the game’s outcome. Likewise, assist network analysis provides practical insights not only for players and coaches in game preparation but also for fans to grasp the dynamics of passing distribution among players. This project manifests the value of such insights, as seen in leagues like the NBA, WNBA, and NCAA. Therefore, it is reasonable to anticipate that the KBL will also adopt similar analyses using play-by-play data, thereby enriching fan engagement with compelling insights into the game.</p>
 
 
 </section>

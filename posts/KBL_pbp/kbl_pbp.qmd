@@ -1,0 +1,656 @@
+---
+title: "Play-by-Play data for Korean Basketball League"
+date: 03-14-2024 
+author: JeongJune Moon
+categories: [KBL]
+image: "kbl.jpeg"
+---
+![Photo from bravo my life magazine](kbl.jpeg){height=500px}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(chron)
+library(readxl)
+library(car)
+
+library(extrafont)
+library(dplyr)
+library(randomForest)
+library(e1071)
+library(nnet)
+library(ggplot2)
+library(gridExtra)
+library(igraph)
+```
+
+## Introduction 
+
+Data is evolving, and so is data in sports. For basketball, it began with basic metrics gleaned from the box score: points, rebounds, assists, and etc. Over time, these traditional statistics evolved into advanced metrics like Player Efficiency Rating and Win Shares. Now, in the contemporary era of basketball, data is being measured and quantified with cutting-edge technologies such as wearables and video cameras.
+
+In contemporary basketball analytics, one invaluable dataset is play-by-play (PBP) data. This detailed resource captures every play along with its corresponding time during a basketball game. PBP data is accessible for leagues like the NBA, WNBA, and NCAA. However, when it comes to the Korean Basketball League (KBL), only box score data is currently available on the KBL website. 
+
+While replicating the high-quality PBP data of leagues like the NBA, WNBA, and NCAA for the KBL can be challenging, there are still alternative methods to compile such data. One approach involves utilizing web scraping techniques to extract information from real-time text updates provided by KBL and platforms like 'Naver.' These updates via text offer descriptions of plays, which allow us to have a rudimentary form of PBP data for further analysis and study.
+
+
+## Game Excitement Index & Win Probability
+
+PBP data opens up numerous possibilities for analysis and insights. One intriguing concepts is the Game Excitement Index (GEI) introduced by [Luke Benz](https://sports.sites.yale.edu/ncaa-basketball-game-excitement-index). GEI seeks to conceptualize how the excitement level of a game after the game has ended. Benz explains that "it's a predictive metric, attempting to forecast how exciting a game might be. Following formula shows how GEI can be computed:
+
+$$
+\Large{GEI = \frac{2400}{T} \sum_{i=2}^{n} |p_i - p_{i-1}|}
+$$
+
+$T$ in the formula represents the time remaining in the game. $n$ indicates how many number of plays has been executed, and $p_i$ is the winning probability of home team on $i$th play of the game.
+
+To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variable in this project was excluded due to personal reasons.
+
+```{r include=F}
+# Reading Data
+pbp <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp.xlsx")
+pbp_test <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp_test.xlsx")
+```
+
+
+```{r include=F}
+pbp2<- pbp %>% filter(game_id!="S43G01N90")
+pbp_test <- pbp_test %>% filter(game_id=="S43G01N252")
+```
+
+
+
+```{r include=F}
+kbl_wp_chart_new <- function(data, training_data, algorithm, show_labels = T) {
+  # Split data into features and target
+    features <- training_data[, c("player_home_away","secs_remaining", "score_diff")]
+    target <- as.factor(training_data$win_loss)
+    new_features <- data[, c("player_home_away","secs_remaining", "score_diff")]
+    
+  if(algorithm=="Random Forest"){
+    # Fit the Random Forest model
+    rf_model <- randomForest(x = features, y = target, ntree = 30 )
+    
+    # Predict using the trained Random Forest model
+    predictions <- predict(rf_model, newdata = new_features, type = "prob")
+    data$win_prob<-predictions[,2]
+    
+  } else if (algorithm=="Neural Network"){
+    # Fit the neural network model
+    nn_model <- nnet(target ~ ., data = features, size = 1, maxit = 100)
+
+    # Predict probabilities using the neural network model
+    predicted_probabilities <- predict(nn_model, newdata = new_features, type = "raw")
+    
+    # Print or use the predicted probabilities
+    data$win_prob<-predicted_probabilities[,1]
+  } else if (algorithm=="Naive Bayes"){
+    # Fit the Naive Bayes model
+    nb_model <- naiveBayes(features, target)
+    
+    # Predict probabilities using the Naive Bayes model
+    predicted_probabilities <- predict(nb_model, newdata = new_features, type = "raw")
+    
+    # Print or use the predicted probabilities
+    data$win_prob<-predicted_probabilities[,2]
+  } else {
+    logit_model <- glm(as.factor(win_loss) ~ secs_remaining + score_diff+ player_home_away,
+                       data = training_data, family = binomial)
+    
+    # Predict using the trained Random Forest model
+    predictions <- predict(logit_model, newdata = new_features, type = "response")
+    data$win_prob<-predictions
+  }
+    
+    
+    if (data$win_loss[1] == 1){
+      data$win_prob <- ifelse(data$secs_remaining==0, 1, data$win_prob)
+  } else{
+    data$win_prob <- ifelse(data$secs_remaining==0, 0, data$win_prob)
+  }
+  
+  # Deciding home color
+  if (data$team[1]=="원주 DB"){
+    home_col <- "#0d7128"
+  }
+  else if(data$team[1]=="서울 삼성"){
+    home_col <- "#0032a0"
+  }
+  else if(data$team[1]=="고양 소노"){
+    home_col <- "#78a2cb"
+  }
+  else if(data$team[1]=="서울 SK"){
+    home_col <- "#dc0029"
+  }
+  else if(data$team[1]=="창원 LG"){
+    home_col <- "#fbcf2f"
+  }
+  else if(data$team[1]=="부산 KCC"){
+    home_col <- "#153a6f"
+  }
+  else if(data$team[1]=="안양 정관장"){
+    home_col <- "#7a2827"
+  }
+  else if(data$team[1]=="수원 KT"){
+    home_col <- "#161213"
+  }
+  else if(data$team[1]=="대구 한국가스공사"){
+    home_col <- "#201451"
+  }
+  else if(data$team[1]=="울산 현대모비스"){
+    home_col <- "#Ff4114"
+  }
+  
+  # Deciding away color
+  if (data$team[6]=="원주 DB"){
+    away_col <- "#0d7128"
+  }
+  else if(data$team[6]=="서울 삼성"){
+    away_col <- "#0032a0"
+  }
+  else if(data$team[6]=="고양 소노"){
+    away_col <- "#78a2cb"
+  }
+  else if(data$team[6]=="서울 SK"){
+    away_col <- "#dc0029"
+  }
+  else if(data$team[6]=="창원 LG"){
+    away_col <- "#fbcf2f"
+  }
+  else if(data$team[6]=="부산 KCC"){
+    away_col <- "#153a6f"
+  }
+  else if(data$team[6]=="안양 정관장"){
+    away_col <- "#7a2827"
+  }
+  else if(data$team[6]=="수원 KT"){
+    away_col <- "#161213"
+  }
+  else if(data$team[6]=="대구 한국가스공사"){
+    away_col <- "#201451"
+  }
+  else if(data$team[6]=="울산 현대모비스"){
+    away_col <- "#Ff4114"
+  }
+
+  home_team <- data$team[1]
+  away_team <- data$team[6]
+  
+  
+  plot_lines <- 1200
+  msec <- plyr::round_any(max(data$secs_remaining), 300)
+  sec <- msec - 2400
+  ot_counter <- 0
+  while(sec > 0) {
+    sec <- sec - 300
+    plot_lines <- c(plot_lines, 2400 + ot_counter * 300)
+    ot_counter <- ot_counter + 1
+  }
+  
+  ### Get into Appropriate Format
+  x <- rbind(
+    dplyr::select(data, secs_remaining, win_prob) %>%
+      dplyr::mutate(team = "home"),
+    dplyr::select(data, secs_remaining, win_prob) %>%
+      dplyr::mutate("win_prob" = 1 - win_prob,
+                    team = "away")
+  ) %>%
+    dplyr::mutate("secs_elapsed" = msec - secs_remaining)
+  
+  if(min(x$secs_elapsed) != 0) {
+
+    
+    x <- 
+      x %>% 
+      dplyr::bind_rows(
+        dplyr::tibble('secs_remaining_absolute' = msec,
+                      'secs_elapsed' = 0,
+                      'win_prob' = c(0.5, 0.5),
+                      'team' = c('home', 'away'))
+      ) %>% 
+      dplyr::arrange(secs_elapsed)
+  }
+  
+  ### Game Excitement Index
+  data$wp_delta <- 0
+  for(i in 2:nrow(data)) {
+    data$wp_delta[i] <- abs(data$win_prob[i] - data$win_prob[i-1])
+  }
+  gei <- sum(data$wp_delta, na.rm = T)
+  gei <- paste("Game Excitement Index:", round(gei, 2))
+  
+  ### Minimum Win Probability
+  if(data$score_diff[nrow(data)] > 0) {
+    min_prob <- min(data$win_prob)
+    min_prob <- paste0("Minimum Win Probability for ", home_team, ": ",
+                       ifelse(100 * min_prob < 1, "< 1%",
+                              paste0(round(100 * min_prob), "%")))
+  } else {
+    min_prob <- min(1 - data$win_prob)
+    min_prob <- paste0("Minimum Win Probability for ", away_team, ": ",
+                       ifelse(100 * min_prob < 1, "< 1%",
+                              paste0(round(100 * min_prob), "%")))
+  }
+  
+  home_score <- data$home_score[nrow(data)]
+  away_score <- data$away_score[nrow(data)]
+  st <- paste0(home_team, ": ", home_score, "  ", away_team, ": ", away_score, "\n", data$date)
+  
+  if(home_score > away_score) {
+    winning_col <- home_col
+    #winning_url <- home_url
+    losing_col <- away_col
+    #losing_url <- away_url
+    x <- dplyr::filter(x, team == 'home')
+  } else {
+    winning_col <- away_col
+    #winning_url <- away_url
+    losing_col <- home_col
+    #losing_url <- home_url
+    x <- dplyr::filter(x, team == 'away')
+  }
+  
+  x$favored <- x$win_prob >= 0.5
+  
+  ix_switch <- which(x$favored != dplyr::lag(x$favored, 1))
+  if(length(ix_switch) > 0) {
+    add <- 
+      dplyr::bind_rows(
+        dplyr::slice(x, ix_switch) %>% dplyr::mutate(id = 1:length(ix_switch)),
+        dplyr::slice(x, ix_switch - 1) %>% dplyr::mutate(id = 1:length(ix_switch))) %>% 
+      dplyr::group_by(id) %>% 
+      dplyr::summarise('secs_elapsed' = secs_elapsed[1] + (secs_elapsed[2] - secs_elapsed[1]) * abs(win_prob[1] - 0.5)/abs(win_prob[1] - win_prob[2]),
+                       'win_prob' = 0.5,
+                       'favored' = favored[1])
+    
+    
+    x <- dplyr::bind_rows(x, add)
+  }
+  
+  
+  x$winning_upper <- pmax(x$win_prob, 0.5)
+  x$losing_lower <- pmin(x$win_prob, 0.5)
+  
+  cols <- c(losing_col, winning_col)
+  if(all(x$favored)) {
+    cols <- cols[2] 
+  }
+  
+
+  
+  p <-
+    ggplot(x, aes(x = secs_elapsed/60, y = win_prob)) +
+    geom_line(linewidth = 1, aes(col = favored, group = 1), lineend = 'round') +
+    ggplot2::geom_vline(xintercept = plot_lines/60, lty = 2, alpha = 0.5, linewidth = 0.8) +
+    ggplot2::labs(x = "Minutes Elapsed",
+                  y = "Win Probability",
+                  col = "",
+                  title = paste0("Win Probability Chart for ", home_team,
+                                 " vs. ", away_team, " by ", algorithm),
+                  subtitle = st) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(plot.title = element_text(size = 10, hjust = 0.5, face="bold"),
+                   plot.subtitle = element_text(size = 8, hjust = 0.5),
+                   axis.title = element_text(size = 10,face="bold"),
+                   plot.caption = element_text(size = 8, hjust = 0),
+                   panel.grid.minor = element_blank(),
+                   legend.position = "bottom",
+                   text=element_text(size=10, family="NanumGothic")) +
+    ggplot2::scale_x_continuous(breaks = seq(0, msec/60, 5)) +
+    ggplot2::scale_y_continuous(limits = c(0,1), labels = function(x) {paste(100 * pmax(x, 1 - x), "%")}) +
+    ggplot2::geom_ribbon(ymax = 0.5,
+                         ggplot2::aes(ymin = winning_upper),
+                         fill = winning_col,
+                         alpha = 0.2) + 
+    ggplot2::geom_ribbon(ymin = 0.5,
+                         ggplot2::aes(ymax = losing_lower),
+                         fill = losing_col,
+                         alpha = 0.2) +
+    ggplot2::scale_size_identity() 
+  if(data$win_loss[1]==1){
+      p<- p+ggplot2::scale_color_manual(values = c(away_col, home_col),
+                                labels = c(away_team, home_team))
+  }else{
+    p<- p+ggplot2::scale_color_manual(values = c(home_col, away_col),
+                                labels = c(home_team, away_team))
+  }
+  
+  
+  if(show_labels) {
+    p <- 
+      p + 
+      ggplot2::annotate("text", x = 0, y = 0.1, label = gei,
+                        family = "NanumGothic", size = 2.3,hjust = 0) +
+      ggplot2::annotate("text", x = 0, y = 0.025, label = min_prob,
+                        family = "NanumGothic", size = 2.3,hjust = 0)
+  }
+  
+  p
+}
+```
+
+```{r include=F}
+kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
+    # Split data into features and target
+    features <- training_data[, c("player_home_away","secs_remaining", "score_diff")]
+    target <- as.factor(training_data$win_loss)
+    new_features <- data[, c("player_home_away","secs_remaining", "score_diff")]
+    
+  if(algorithm=="Random Forest"){
+    # Fit the Random Forest model
+    rf_model <- randomForest(x = features, y = target, ntree = 30 )
+    
+    # Predict using the trained Random Forest model
+    predictions <- predict(rf_model, newdata = new_features, type = "prob")
+    data$win_prob<-predictions[,2]
+    
+  } else if (algorithm=="Neural Network"){
+    # Fit the neural network model
+    nn_model <- nnet(target ~ ., data = features, size = 1, maxit = 100)
+
+    # Predict probabilities using the neural network model
+    predicted_probabilities <- predict(nn_model, newdata = new_features, type = "raw")
+    
+    # Print or use the predicted probabilities
+    data$win_prob<-predicted_probabilities[,1]
+  } else if (algorithm=="Naive Bayes"){
+    # Fit the Naive Bayes model
+    nb_model <- naiveBayes(features, target)
+    
+    # Predict probabilities using the Naive Bayes model
+    predicted_probabilities <- predict(nb_model, newdata = new_features, type = "raw")
+    
+    # Print or use the predicted probabilities
+    data$win_prob<-predicted_probabilities[,2]
+  } else {
+    logit_model <- glm(as.factor(win_loss) ~ secs_remaining + score_diff+ player_home_away,
+                       data = training_data, family = binomial)
+    
+    # Predict using the trained Random Forest model
+    predictions <- predict(logit_model, newdata = new_features, type = "response")
+    data$win_prob<-predictions
+  }
+    
+  if (data$win_loss[1] == 1){
+    data$win_prob <- ifelse(data$secs_remaining==0, 1, data$win_prob)
+  } else{
+    data$win_prob <- ifelse(data$secs_remaining==0, 0, data$win_prob)
+  }
+  # Deciding home color
+  if (data$team[1]=="원주 DB"){
+    home_col <- "#0d7128"
+  }
+  else if(data$team[1]=="서울 삼성"){
+    home_col <- "#0032a0"
+  }
+  else if(data$team[1]=="고양 소노"){
+    home_col <- "#78a2cb"
+  }
+  else if(data$team[1]=="서울 SK"){
+    home_col <- "#dc0029"
+  }
+  else if(data$team[1]=="창원 LG"){
+    home_col <- "#fbcf2f"
+  }
+  else if(data$team[1]=="부산 KCC"){
+    home_col <- "#153a6f"
+  }
+  else if(data$team[1]=="안양 정관장"){
+    home_col <- "#7a2827"
+  }
+  else if(data$team[1]=="수원 KT"){
+    home_col <- "#161213"
+  }
+  else if(data$team[1]=="대구 한국가스공사"){
+    home_col <- "#201451"
+  }
+  else if(data$team[1]=="울산 현대모비스"){
+    home_col <- "#Ff4114"
+  }
+  
+  # Deciding away color
+  if (data$team[6]=="원주 DB"){
+    away_col <- "#0d7128"
+  }
+  else if(data$team[6]=="서울 삼성"){
+    away_col <- "#0032a0"
+  }
+  else if(data$team[6]=="고양 소노"){
+    away_col <- "#78a2cb"
+  }
+  else if(data$team[6]=="서울 SK"){
+    away_col <- "#dc0029"
+  }
+  else if(data$team[6]=="창원 LG"){
+    away_col <- "#fbcf2f"
+  }
+  else if(data$team[6]=="부산 KCC"){
+    away_col <- "#153a6f"
+  }
+  else if(data$team[6]=="안양 정관장"){
+    away_col <- "#7a2827"
+  }
+  else if(data$team[6]=="수원 KT"){
+    away_col <- "#161213"
+  }
+  else if(data$team[6]=="대구 한국가스공사"){
+    away_col <- "#201451"
+  }
+  else if(data$team[6]=="울산 현대모비스"){
+    away_col <- "#Ff4114"
+  }
+
+  home_team <- data$team[1]
+  away_team <- data$team[6]
+  plot_lines <- 1200
+  msec <- max(data$secs_remaining)
+  sec <- msec - 2400
+  ot_counter <- 0
+  
+  while(sec > 0) {
+    sec <- sec - 300
+    plot_lines <- c(plot_lines, 2400 + ot_counter * 300)
+    ot_counter <- ot_counter + 1
+  }
+
+  ### Get into Appropriate Format
+  x <- rbind(
+    dplyr::select(data, secs_remaining, win_prob) %>%
+      dplyr::mutate(team = "home"),
+    dplyr::select(data, secs_remaining, win_prob) %>%
+      dplyr::mutate("win_prob" = 1 - win_prob,
+                    team = "away")
+  ) %>%
+    dplyr::mutate("secs_elapsed" = max(secs_remaining) - secs_remaining)
+
+  ### Game Excitement Index
+  data$wp_delta <- 0
+  for(i in 2:nrow(data)) {
+    data$wp_delta[i] <- abs(data$win_prob[i] - data$win_prob[i-1])
+  }
+  gei <- sum(data$wp_delta, na.rm = T)
+  gei <- paste("Game Excitement Index:", round(gei, 2))
+
+  ### Minimum Win Probability
+  if(data$score_diff[nrow(data)] > 0) {
+    min_prob <- min(data$win_prob)
+    min_prob <- paste0("Minimum Win Probability for ", home_team, ": ",
+                       ifelse(100 * min_prob < 1, "< 1%",
+                              paste0(round(100 * min_prob), "%")))
+  } else {
+    min_prob <- min(1 - data$win_prob)
+    min_prob <- paste0("Minimum Win Probability for ", away_team, ": ",
+                       ifelse(100 * min_prob < 1, "< 1%",
+                              paste0(round(100 * min_prob), "%")))
+  }
+
+  home_score <- data$home_score[nrow(data)]
+  away_score <- data$away_score[nrow(data)]
+  st <- paste0(home_team, ": ", home_score, "  ", away_team, ": ", away_score, "\n", data$date)
+
+  p <- ggplot2::ggplot(x, ggplot2::aes(x = secs_elapsed/60, y = win_prob, group = team, col = team)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::theme_bw() +
+    ggplot2::geom_vline(xintercept = plot_lines/60, lty = 2, alpha = 0.5, linewidth = 0.8) +
+    ggplot2::labs(x = "Minutes Elapsed",
+                  y = "Win Probability",
+                  col = "",
+                  title = paste0("Win Probability Chart for ", home_team,
+                                 " vs. ", away_team, " by ", algorithm),
+                  subtitle = st) +
+    ggplot2::theme(plot.title = element_text(size = 10, hjust = 0.5, face="bold"),
+                   plot.subtitle = element_text(size = 8, hjust = 0.5),
+                   axis.title = element_text(size = 10,face="bold"),
+                   plot.caption = element_text(size = 8, hjust = 0),
+                   legend.position = "bottom",
+                   text=element_text(size=10, family="NanumGothic")) +
+    ggplot2::scale_x_continuous(breaks = seq(0, msec/60, 5)) +
+    ggplot2::scale_y_continuous(labels = function(x) {paste(100 * x, "%")}) +
+    ggplot2::scale_color_manual(values = c(away_col, home_col),
+                                labels = c(away_team, home_team))
+
+  if(show_labels) {
+    p <- p +
+      ggplot2::annotate("text", x = 0, y = 0.1, label = gei,
+                        family = "NanumGothic", size = 2.3,hjust = 0) +
+      ggplot2::annotate("text", x = 0, y = 0.025, label = min_prob,
+                        family = "NanumGothic", size = 2.3,hjust = 0)
+  }
+
+  p
+}
+```
+
+```{r}
+kbl_wp_chart(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)
+kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)
+```
+
+The visualization function heavily relies on the 'ncaahoopR' package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances.
+
+```{r include=F}
+pbp_test <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp_test.xlsx")
+pbp_test <- pbp_test %>% filter(game_id=="S43G01N256")
+```
+
+```{r include=F}
+plot1 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)+ggtitle("Logistic Regression")
+plot2 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Naive Bayes", show_labels = T)+ggtitle("Naive Bayes")
+plot3 <-kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Random Forest", show_labels = T)+ggtitle("Random Forest")
+plot4 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Neural Network", show_labels = T)+ggtitle("Neural Network")
+```
+
+```{r echo=F}
+grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
+```
+
+The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest demonstrated a relatively higher variability compared to the other three. Notably, due to this increased variability, the GEI of the Random Forest model was the highest among the four models.
+
+```{r include=F}
+add_assist <- function(data){
+  data$shooter<-rep(NA, nrow(data))
+  data$assisted<-rep(NA, nrow(data))
+
+  
+  for (i in 1:(nrow(data)-1)){
+    text <- data$description[i]
+    result <- substr(text, nchar(text) - 1, nchar(text))
+    
+    if (result == "성공"){
+      shot_taker <- substr(text, 1, nchar(text) - 5)
+      data$shooter[i] <- shot_taker
+      if (data$time_remaining[i]==data$time_remaining[i+1] & grepl("어시스트", data$description[i+1])==T){
+        text <- data$description[i+1]
+        # Split the string by all spaces except the last one
+        split_text <- strsplit(text, " (?=[^ ]+$)", perl = TRUE)[[1]]
+        
+        # Extract the first element
+        data$assisted[i] <- split_text[-length(split_text)][1]
+      }
+    }
+  }
+  
+  data <- data[!grepl("자유투", data$description), ]
+  x<-na.omit(data)
+  ### Adjust Three Point Weights in Network
+  x$weights <- 3
+
+  
+  threes <- grep("3점슛", x$description)
+  x$weights[threes] <- 3
+
+
+  return(x)
+}
+
+
+#View(add_assist(pbp_test))
+```
+
+```{r include=F}
+kbl_assist_net <- function(data, team_select, random, top=10,col="orange"){
+  basketball_data<-data[data$team==team_select,]
+  min_date<-min(basketball_data$date)
+  max_date<-max(basketball_data$date)
+  basketball_data2<-add_assist(basketball_data)
+  basketball_data<-add_assist(basketball_data)
+  basketball_data<- basketball_data %>% group_by(assisted, shooter) %>% 
+    summarise(points = sum(weights),
+              average = mean(weights),.groups = "drop" )
+  basketball_data$shooter <- trimws(basketball_data$shooter, "right")
+  basketball_data<-basketball_data[, c( "assisted", "shooter","points")]
+  basketball_data<-basketball_data %>% arrange(desc(points)) %>% head(top)
+  basketball_graph <- graph_from_data_frame(basketball_data, directed = TRUE)
+  
+  value_counts <- table(basketball_data2$assisted)
+
+  # Calculate proportion of each unique value
+  proportions <- as.data.frame(prop.table(value_counts)) %>% arrange(desc(Freq))
+  
+  par(mar = c(3, 3, 3, 3), font.main = 2) 
+  set.seed(random) 
+  plot(basketball_graph,  # Use a circular layout for simplicity
+     vertex.label.dist = 0,      # Adjust label distance from nodes
+     vertex.label.cex = 0.7,     # Adjust label size
+     edge.arrow.size = 0.5,  
+     edge.curved = 0.3, # Adjust arrow size for directed graph
+     edge.label = basketball_data$points, 
+     vertex.label.color = "black",
+     vertex.color = col,
+     vertex.frame.color = col,
+     vertex.size = 20,
+     #edge.width=(basketball_data$points),# Show shot type as edge labels
+     edge.label.cex = 0.7,
+     edge.label.color="black",
+     vertex.label.family ="NanumGothic",
+     edge.label.family = "NanumGothic",
+     edge.label.font = 2)
+
+  title(main = (paste0("Assist Network for ",team_select)), cex.main = 0.9, font.main = 2)
+  mtext(paste0("From ",min_date," to ",max_date), side = 3, line = 0, cex = 0.6)
+  text(-1.8, -0.8,cex = 0.6, paste0("Assist Frequency Leaders:"),pos=4)
+  text(-1.8, -0.9,cex = 0.6, paste0("• ",proportions[1,1],
+                                "(",round(100*proportions[1,2],2),"%)"),pos = 4)
+  text(-1.8, -1.0,cex = 0.6, paste0("• ",proportions[2,1],
+                                "(",round(100*proportions[2,2],2),"%)"),pos = 4)
+  text(-1.8, -1.1,cex = 0.6, paste0("• ",proportions[3,1],
+                                "(",round(100*proportions[3,2],2),"%)"),pos = 4)
+}
+```
+
+## Assist Network Analysis
+
+```{r}
+kbl_assist_net(data=pbp2, team_select="서울 삼성",random=14,top=13,"lightblue")
+```
+
+Another intriguing application for play-by-play data is assist network analysis, which visualizes the connections between players based on assist frequency. In the analysis presented above, it's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Seoul Samsung(서울 삼성) from 2023-10-22 to 2024-03-14. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL.
+
+
+## Discussion
+
+ESPN has already implemented a winning probability chart on their website, enabling fans to interact with the data and understand how each play impacts the game's outcome. Likewise, assist network analysis provides practical insights not only for players and coaches in game preparation but also for fans to grasp the dynamics of passing distribution among players. This project manifests the value of such insights, as seen in leagues like the NBA, WNBA, and NCAA. Therefore, it is reasonable to anticipate that the KBL will also adopt similar analyses using play-by-play data, thereby enriching fan engagement with compelling insights into the game.
+
+
+
+
+
+
