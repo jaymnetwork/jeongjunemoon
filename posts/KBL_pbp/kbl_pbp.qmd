@@ -522,20 +522,23 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
 
 ```{r}
 kbl_wp_chart(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)
-kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)
+kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "SVM", show_labels = T)
 ```
 
 Evaluating the accuracy of a model may not be feasible, as we can not know whether the team won or not during the game. Nonetheless, it's still worth noting that the models displayed reasonable performance by predicting approximately 50% prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.
 
 The visualization function heavily relies on the 'ncaahoopR' package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances. 
 
+
 ```{r include=F}
-pbp_test <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp_test.xlsx")
-pbp_test <- pbp_test %>% filter(game_id=="S43G01N256")
-plot4 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Neural Network", show_labels = T)+ggtitle("Neural Network")
-plot1 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)+ggtitle("Logistic Regression")
-plot2 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Naive Bayes", show_labels = T)+ggtitle("Naive Bayes")
-plot3 <-kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Random Forest", show_labels = T)+ggtitle("Random Forest")
+pbp_test2 <- read_excel("/Users/jaymnetwork/Desktop/selenium/S43G01N256.xlsx")
+```
+
+```{r include=F}
+plot4 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "SVM", show_labels = T)+ggtitle("Neural Network")
+plot1 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Logistic Regression", show_labels = T)+ggtitle("Logistic Regression")
+plot2 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Naive Bayes", show_labels = T)+ggtitle("Naive Bayes")
+plot3 <-kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Random Forest", show_labels = T)+ggtitle("Random Forest")
 ```
 
 ```{r echo=F}
@@ -658,11 +661,12 @@ There are wide-ranging methodologies that can be applied by leveraging play-by-p
 
 ## Reference
 
+- Florian, Korte; Lames, Martin. (2018). Characterizing different team sports using network analysis. Current Issues in Sport Science. <https://doi.org/10.15203/CISS_2018.005>
 - Luca Grassetti, Ruggero Bellio, Luca Di Gaspero, Giovanni Fonseca, Paolo Vidoni. (2021). An extended regularized adjusted plus-minus analysis for lineup management in basketball using play-by-play data. IMA Journal of Management Mathematics. <https://doi.org/10.1093/imaman/dpaa022>
+- Luís Vilar, Duarte Araújo, Keith Davids, Yaneer Bar-Yam. (2013). Science of winning soccer: Emergent pattern-forming dynamics in association football. Journal of Systems Science and Complexity. <https://doi.org/10.1007/s11424-013-2286-z>
 - Luke Benz. (2017). NCAA Basketball Game Excitement. Yale Undergraduate Sports Analytics Group. Retrieved from <https://sports.sites.yale.edu/ncaa-basketball-game-excitement-index> 
 - Petar Vračar, Erik Štrumbelj, Igor Kononenko. (2016). Modeling basketball play-by-play data, Expert Systems with Applications. <https://doi.org/10.1016/j.eswa.2015.09.004>
-- Luís Vilar, Duarte Araújo, Keith Davids, Yaneer Bar-Yam. (2013). Science of winning soccer: Emergent pattern-forming dynamics in association football. Journal of Systems Science and Complexity. <https://doi.org/10.1007/s11424-013-2286-z>
-- Florian, Korte; Lames, Martin. (2018). Characterizing different team sports using network analysis. Current Issues in Sport Science. <https://doi.org/10.15203/CISS_2018.005>
+
 
 
 ## \n
