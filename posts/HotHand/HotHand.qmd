@@ -3,9 +3,9 @@ title: "Does Hot Hand exist?"
 date: 12-2-2023 
 author: JeongJune Moon
 categories: [NBA]
-image: "hinson.webp"
+image: "reggie.webp"
 ---
-![Photo by Lance King | Getty Images](hinson.webp){height=500px}
+![Photo by Kathy Willens | AP Photo](reggie.webp){height=500px}
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
