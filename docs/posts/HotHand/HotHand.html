@@ -354,10 +354,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="modeling-variables">Modeling: Variables</h2>
 <p>To test the hypothesis of Hot Hand, we built a model that can represent the original definition of Hot Hand. For this model, we used the variables below:</p>
 <ul>
-<li>Response Variable: whether the player made a shot or not.</li>
-<li>the previous streak of success before attempting the current shot.</li>
-<li>Last 4 shot percentage of a player.</li>
-<li>The entire shot percentage before taking a new shot.</li>
+<li><p>Response Variable: whether the player made a shot or not.</p></li>
+<li><p>the previous streak of success before attempting the current shot.</p></li>
+<li><p>Last 4 shot percentage of a player.</p></li>
+<li><p>The entire shot percentage before taking a new shot.</p></li>
 </ul>
 <p>As the definition of a Hot Hand is previous successive shots increasing the chance of making the current shot, we created the <em>isShotMadeBinary</em>, indicating whether the player made the attempted shot for our response variable. The code below converts true or false values from <em>isShotMade</em> to 1s and 0s. Then, by using the <em>isShotMadeBinary</em>, we cumulated the successive field goals made as a streak, which is the most crucial term in the definition.</p>
 <div class="cell">
@@ -372,10 +372,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>While the contemporary era enables us to measure new types of variables, we also included modern features that could indicate information about a player’s shot. The additional predictors used in the full model are listed below:</p>
 <ul>
-<li>Distance of a shot</li>
-<li>Name of a zone on the court</li>
-<li>Type of a shot</li>
-<li>The exact location of a shot</li>
+<li><p>Distance of a shot</p></li>
+<li><p>Name of a zone on the court</p></li>
+<li><p>Type of a shot</p></li>
+<li><p>The exact location of a shot</p></li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Formula for each model</span></span>

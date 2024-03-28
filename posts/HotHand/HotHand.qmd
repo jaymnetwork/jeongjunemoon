@@ -315,8 +315,11 @@ The player who seemed to have a significant increase in slope was Donovan Mitche
 To test the hypothesis of Hot Hand, we built a model that can represent the original definition of Hot Hand. For this model, we used the variables below:
 
 - Response Variable: whether the player made a shot or not.
+
 - the previous streak of success before attempting the current shot.
+
 - Last 4 shot percentage of a player.
+
 - The entire shot percentage before taking a new shot.
 
 As the definition of a Hot Hand is previous successive shots increasing the chance of making the current shot, we created the *isShotMadeBinary*, indicating whether the player made the attempted shot for our response variable. The code below converts true or false values from *isShotMade* to 1s and 0s. Then, by using the *isShotMadeBinary*, we cumulated the successive field goals made as a streak, which is the most crucial term in the definition.
@@ -455,8 +458,11 @@ embiid_shots3<-embiid_shots2 %>% drop_na(streaks, lastFour,lastPercentage)
 While the contemporary era enables us to measure new types of variables, we also included modern features that could indicate information about a player's shot. The additional predictors used in the full model are listed below:
 
 - Distance of a shot
+
 - Name of a zone on the court
+
 - Type of a shot
+
 - The exact location of a shot
 
 ```{r}
