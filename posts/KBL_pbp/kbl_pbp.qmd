@@ -535,6 +535,7 @@ pbp_test2 <- read_excel("/Users/jaymnetwork/Desktop/selenium/S43G01N256.xlsx")
 ```
 
 ```{r include=F}
+set.seed(13)
 plot4 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Neural Network", show_labels = T)+ggtitle("Neural Network")
 plot1 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Logistic Regression", show_labels = T)+ggtitle("Logistic Regression")
 plot2 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Naive Bayes", show_labels = T)+ggtitle("Naive Bayes")
