@@ -588,9 +588,9 @@ However, Hot hand is a complicated concept. While many statisticians have been c
 
 -   Bocskocsky, A., Ezekowitz, J., & Stein, C. (2014). Heat check: New evidence on the hot hand in basketball. Retrieved from <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2481494>
 -   Gilovich, T., Vallone, R., & Tversky, A. (1985). The hot hand in basketball: On the misperception of random sequences. Cognitive Psychology, 17(3), 295--314. [doi:https://doi.org/10.1016/0010-0285(85)90010-6](doi:https://doi.org/10.1016/0010-0285(85)90010-6){.uri}
--   Lantis, R., & Nesson, E. (2021). Hot shots: An analysis of the "Hot hand" in NBA field goal and free throw shooting. Journal of Sports Economics, 22(6), 639--677. <doi:10.1177/15270025211006889>
--   Pelechrinis, K., & Winston, W. (2022). The hot hand in the wild. PLOS ONE, 17(1). <doi:10.1371/journal.pone.0261890>
--   Sauer, R. D., & Brown, W. O. (1993). Does the Basketball Market Believe in the Hot Hand? Comment. The American Economic Review, 83(5), 1377--1386. <doi:http://www.jstor.org/stable/2117569>.
+-   Lantis, R., & Nesson, E. (2021). Hot shots: An analysis of the "Hot hand" in NBA field goal and free throw shooting. Journal of Sports Economics, 22(6), 639--677. [doi:10.1177/15270025211006889](doi:10.1177/15270025211006889){.uri}
+-   Pelechrinis, K., & Winston, W. (2022). The hot hand in the wild. PLOS ONE, 17(1). [doi:10.1371/journal.pone.0261890](doi:10.1371/journal.pone.0261890){.uri} 
+-   Sauer, R. D., & Brown, W. O. (1993). Does the Basketball Market Believe in the Hot Hand? Comment. The American Economic Review, 83(5), 1377--1386. [doi:http://www.jstor.org/stable/2117569](doi:http://www.jstor.org/stable/2117569){.uri} 
 
 
 ## \n
