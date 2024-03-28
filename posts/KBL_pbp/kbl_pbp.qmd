@@ -610,7 +610,7 @@ kbl_assist_net <- function(data, team_select, random, top=10,col="orange"){
   # Calculate proportion of each unique value
   proportions <- as.data.frame(prop.table(value_counts)) %>% arrange(desc(Freq))
   
-  par(mar = c(3, 3, 3, 3), font.main = 2) 
+  par(mar = c(3, 3, 3, 3)) 
   set.seed(random) 
   plot(basketball_graph,  # Use a circular layout for simplicity
      vertex.label.dist = 0,      # Adjust label distance from nodes

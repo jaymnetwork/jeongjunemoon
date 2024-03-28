@@ -67,7 +67,7 @@ Looking at the histogram below, the scores from four players are very extreme va
 ```{r echo = FALSE}
 # NBA Points in Single Game By Players (2022-23)
 ggplot(gamedata, aes(x=pts))+
-  geom_histogram(color="#ebebeb", fill="steelblue", alpha=0.6)+
+  geom_histogram(color="#ebebeb", fill="#153a6f", alpha=0.9)+
   ggtitle("NBA Points in Single Game By Players (2022-23)") +
   xlab("Points In Single Game")+ 
   ylab("The Number of Games")+
@@ -509,7 +509,7 @@ importance_plot<-function(classifier,Title){
   importance %>% 
     pivot_longer(cols=matches("Mean")) %>% 
     ggplot(aes(value, vars)) +
-    geom_col(col="#ebebeb",fill="darkorange") +
+    geom_col(col="#ebebeb",fill="#153a6f") +
     geom_text(aes(label=round(value), x=0.5*value), size=2, colour="white") +
     facet_grid(. ~ name, scales="free_x") +
     scale_x_continuous(expand=expansion(c(0,0.04))) +
