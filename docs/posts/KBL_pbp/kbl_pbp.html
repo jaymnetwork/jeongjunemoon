@@ -260,18 +260,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Evaluating the accuracy of a model may not be feasible, as we can not know whether the team won or not during the game. Nonetheless, it’s still worth noting that the models displayed reasonable performance by predicting approximately 50% prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.</p>
 <p>The visualization function heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1, plot2, plot3, plot4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="kbl_pbp_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest demonstrated a relatively higher variability compared to the other three. Notably, due to this increased variability, the GEI of the Random Forest model was the highest among the four models.</p>
+<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest demonstrated a relatively higher variability compared to the other three. Due to this increased variability, the GEI of the Random Forest model was the highest among the four models.</p>
 <p>The models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds. However, there remains a potential to amplify these models by including additional variables, such as the team’s shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team.</p>
 </section>
 <section id="assist-network-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="assist-network-analysis">Assist Network Analysis</h2>
-<p>Another intriguing application for play-by-play data is assist network analysis. Network analysis can be used to decompose the sophisticated aspect of player’s team work and their contribution to a team’s interactive plays (Korte et al, 2018). This is known to be vital in the analysis of team sports (Vilar et al., 2013, as cited in Korte et al, 2018). In basketball, network analysis can visualizes the connections between players based on assist frequency. Although assist network is also presented in the package by Benz, a new iteration had to be developed due to data incompatibility. At the same time, the main objective of this visualization was to enhance readability. As the data spans an entire season, it can become challenging to interpret, potentially reducing its usefulness for stakeholders.</p>
+<p>Another intriguing application for play-by-play data is assist network analysis. Network analysis can be used to decompose the sophisticated aspect of player’s team work and their contribution to a team’s interactive plays (Korte et al, 2018). This is known to be vital in the analysis of team sports (Vilar et al., 2013; Korte et al, 2018). In basketball, network analysis can visualizes the connections between players based on assist frequency. Although assist network is also presented in the package by Benz, a new iteration had to be developed due to data incompatibility. At the same time, the main objective of this visualization was to enhance readability. As the data spans an entire season, it can become challenging to interpret, potentially reducing its usefulness for stakeholders.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_assist_net</span>(<span class="at">data=</span>pbp2, <span class="at">team_select=</span><span class="st">"서울 삼성"</span>,<span class="at">random=</span><span class="dv">14</span>,<span class="at">top=</span><span class="dv">13</span>,<span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_assist_net</span>(<span class="at">data=</span>pbp2, <span class="at">team_select=</span><span class="st">"서울 삼성"</span>,<span class="at">random=</span><span class="dv">14</span>,<span class="at">top=</span><span class="dv">13</span>,<span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="kbl_pbp_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -295,7 +296,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
-<p>This project is also in the process of releasing as an R package to contribute in Korean basketball analytics.</p>
+<p>This project is also in the process of releasing as an R package to contribute to Korean basketball analytics.</p>
 
 
 </section>
