@@ -4,7 +4,7 @@ filters:
    - lightbox
 lightbox: auto
 ---
-This is a place where I archive my photos. 
+This will be a place where I archive my photos. 
 
 
 ::: {style="display: grid;grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));grid-gap: 1em;"}
