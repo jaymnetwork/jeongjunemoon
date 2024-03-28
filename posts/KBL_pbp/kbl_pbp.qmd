@@ -535,10 +535,10 @@ pbp_test <- pbp_test %>% filter(game_id=="S43G01N256")
 ```
 
 ```{r include=F}
+plot4 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Neural Network", show_labels = T)+ggtitle("Neural Network")
 plot1 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)+ggtitle("Logistic Regression")
 plot2 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Naive Bayes", show_labels = T)+ggtitle("Naive Bayes")
 plot3 <-kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Random Forest", show_labels = T)+ggtitle("Random Forest")
-plot4 <- kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "Neural Network", show_labels = T)+ggtitle("Neural Network")
 ```
 
 ```{r echo=F}
