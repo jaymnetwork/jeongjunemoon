@@ -556,12 +556,12 @@ summary(logistic_model(mitchell_shots3))
 summary(logistic_model(embiid_shots3))
 ```
 
-Some may argue that scoring could become more challenging when shots are attempted closer to the basket due to increased defensive presence near the post. However, if a player is on a cold streak and want to find the rhythm to heat up for Hot Hand, shooting closer or driving and penetrating the defense could be a good shooting scheme during the game.
+Some may argue that scoring could become more challenging when shots are attempted closer to the basket due to increased defensive presence near the post. However, if a player is on a cold streak and want to find the rhythm to heat up for Hot Hand, shooting closer or driving and penetrating to the defense could be a good shooting scheme during the game.
 
 
 ## Discussion
 
-Overall, we found evidence that Hot Hand may be an illusion based on the data. It turned out that the distance and location were statistically significant for both predicting and inference perspectives. Thus, if a player on the court seems to be having a Hot Hand, this might be due to the distance and not the streak of success. Therefore, it may not be an ideal strategy for a coach to solely rely on a "hot-hand" player to take the final shot when the game is tied in the closing seconds.
+Overall, we found evidence that Hot Hand may be an illusion based on the data. It turned out that the distance and location were statistically significant for both predicting and inference perspectives. If a player on the court seems to be having a Hot Hand, this might be due to the distance and not the streak of success. Therefore, it may not be an ideal strategy for a coach to solely rely on a "hot-hand" player to take the final shot when the game is tied in the closing seconds.
 
 Hot hand, however, is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under the statistics domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies. 
 
@@ -569,11 +569,11 @@ Hot hand, however, is a complicated concept. While many statisticians have been 
 
 ## Reference
 
--   Bocskocsky, A., Ezekowitz, J., & Stein, C. (2014). Heat check: New evidence on the hot hand in basketball. Retrieved from <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2481494>
--   Gilovich, T., Vallone, R., & Tversky, A. (1985). The hot hand in basketball: On the misperception of random sequences. Cognitive Psychology, 17(3), 295--314. [doi:https://doi.org/10.1016/0010-0285(85)90010-6](doi:https://doi.org/10.1016/0010-0285(85)90010-6){.uri}
--   Lantis, R., & Nesson, E. (2021). Hot shots: An analysis of the "Hot hand" in NBA field goal and free throw shooting. Journal of Sports Economics, 22(6), 639--677. [doi:10.1177/15270025211006889](doi:10.1177/15270025211006889){.uri}
--   Pelechrinis, K., & Winston, W. (2022). The hot hand in the wild. PLOS ONE, 17(1). [doi:10.1371/journal.pone.0261890](doi:10.1371/journal.pone.0261890){.uri} 
--   Sauer, R. D., & Brown, W. O. (1993). Does the Basketball Market Believe in the Hot Hand? Comment. The American Economic Review, 83(5), 1377--1386. [doi:http://www.jstor.org/stable/2117569](doi:http://www.jstor.org/stable/2117569){.uri} 
+-   Bocskocsky, A., Ezekowitz, J., & Stein, C. (2014). Heat check: New evidence on the hot hand in basketball. Retrieved from <http://dx.doi.org/10.2139/ssrn.2481494>
+-   Gilovich, T., Vallone, R., & Tversky, A. (1985). The hot hand in basketball: On the misperception of random sequences. Cognitive Psychology, 17(3), 295--314. <https://doi.org/10.1016/0010-0285(85)90010-6>
+-   Lantis, R., & Nesson, E. (2021). Hot shots: An analysis of the "Hot hand" in NBA field goal and free throw shooting. Journal of Sports Economics, 22(6), 639--677. <https://doi.org/10.1177/15270025211006889>
+-   Pelechrinis, K., & Winston, W. (2022). The hot hand in the wild. PLOS ONE, 17(1). <https://doi.org/10.1371/journal.pone.0261890>
+-   Sauer, R. D., & Brown, W. O. (1993). Does the Basketball Market Believe in the Hot Hand? Comment. The American Economic Review, 83(5), 1377-1386. <https://www.jstor.org/stable/2117569> 
 
 
 ## \n

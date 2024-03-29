@@ -553,7 +553,7 @@ The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neur
 
 The Random Forest model, on the other hand, showed a relatively higher variability and a less detailed trend line compared to the other three models. As a result of this increased variability, the GEI of the Random Forest model was the highest among the four models. Above all, the probability of reaching 100% before the game ends is logically flawed to some extent. These outcomes indicate that this particular model may require additional adjustments.
 
-There still remains a potential to amplify these models by including additional variables, such as the team's shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team. We can also refine the pre-game win probability by considering factors such as the team's schedule, including back-to-back games, and their recent performance over the last few games
+There still remains a potential to amplify these models by including additional variables, such as the team's shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team. We can also refine the pre-game win probability by considering factors such as the team's schedule, including back-to-back games, and their recent performance over the last few games.
 
 ```{r include=F}
 add_assist <- function(data){
