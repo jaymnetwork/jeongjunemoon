@@ -563,7 +563,7 @@ Some may argue that scoring could become more challenging when shots are attempt
 
 Overall, we found evidence that Hot Hand may be an illusion based on the data. It turned out that the distance and location were statistically significant for both predicting and inference perspectives. Thus, if a player on the court seems to be having a Hot Hand, this might be due to the distance and not the streak of success. Therefore, it may not be an ideal strategy for a coach to solely rely on a "hot-hand" player to take the final shot when the game is tied in the closing seconds.
 
-Hot hand however, is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under the statistics domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies. 
+Hot hand, however, is a complicated concept. While many statisticians have been claiming that the hot hand is a fallacy, the hot hand is not completely under the statistics domain. Shooting in a streak involves various factors, such as muscle memory and psychological factors, that have not yet been measured during the basketball game. Therefore, further studies should be made based on a number of different factors that could newly conceptualize the features when a player is making a shot attempt, as well as utilizing cutting-edge methodologies. 
 
 
 

@@ -244,7 +244,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[
 \Large{GEI = \frac{2400}{T} \sum_{i=2}^{n} |p_i - p_{i-1}|}
 \]</span></p>
-<p><span class="math inline">\(T\)</span> in the formula represents the time remaining in the game with 2400 being the total duration. <span class="math inline">\(n\)</span> indicates how many number of plays has been executed, and <span class="math inline">\(p_i\)</span> is the winning probability of home team on <span class="math inline">\(i\)</span>th play of the game.</p>
+<p><span class="math inline">\(T\)</span> in the formula represents the time remaining in the game with 2400 being the total duration. <span class="math inline">\(n\)</span> denotes how many number of plays has been executed, and <span class="math inline">\(p_i\)</span> is the winning probability of home team on <span class="math inline">\(i\)</span>th play of the game.</p>
 <p>To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons as well as time consuming factors.</p>
 <p>The training data for this project’s model spanned from October 23, 2023, to March 14, 2024, encompassing a total of 165,266 plays in the dataset. To test the model, games scheduled after March 14, 2024, were utilized for the prediction.</p>
 <div class="cell">
@@ -254,21 +254,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game’s momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC’s 94.8% winning percentage.</p>
+<p>In a similar vein, Robberechts et al.&nbsp;articulate how the calculation of win probability provides a quantifiable measure of performance under mental pressure. These pivotal moments, often termed ‘clutch’ plays, can be conceptualized by the difference in win probability before and after their occurrence. Therefore, win probability models can function as a tool for assessing in-game decision-making processes and quantifying the balance between risk and reward in coaching decisions (Robberechts et al., 2019).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart_new</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="at">algorithm=</span><span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="kbl_pbp_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The visualization function for win probability heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to to compare and analyze prediction patterns and variances.</p>
+<p>The visualization function for win probability heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to to compare and analyze prediction patterns and variances. The four models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1, plot2, plot3, plot4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="kbl_pbp_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. Most of all, the notable point is that the three models predicted approximately 50% win probability prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage. Random Forest on the other hand showed a relatively higher variability compared to the other three. Due to this increased variability, the GEI of the Random Forest model was the highest among the four models.</p>
-<p>The models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds. However, there remains a potential to amplify these models by including additional variables, such as the team’s shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team.</p>
+<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. The notable point is that the three models predicted approximately 50% win probability prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.</p>
+<p>The Random Forest model, on the other hand, showed a relatively higher variability and a less detailed trend line compared to the other three models. As a result of this increased variability, the GEI of the Random Forest model was the highest among the four models. Above all, the probability of reaching 100% before the game ends is logically flawed to some extent. These outcomes indicate that this particular model may require additional adjustments.</p>
+<p>There still remains a potential to amplify these models by including additional variables, such as the team’s shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team. We can also refine the pre-game win probability by considering factors such as the team’s schedule, including back-to-back games, and their recent performance over the last few games</p>
 </section>
 <section id="assist-network-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="assist-network-analysis">Assist Network Analysis</h2>
@@ -289,11 +291,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="reference" class="level2">
 <h2 class="anchored" data-anchor-id="reference">Reference</h2>
 <ul>
-<li>Florian, Korte; Lames, Martin. (2018). Characterizing different team sports using network analysis. Current Issues in Sport Science. <a href="https://doi.org/10.15203/CISS_2018.005" class="uri">https://doi.org/10.15203/CISS_2018.005</a></li>
+<li>Florian Korte, Lames Martin. (2018). Characterizing different team sports using network analysis. Current Issues in Sport Science. <a href="https://doi.org/10.15203/CISS_2018.005" class="uri">https://doi.org/10.15203/CISS_2018.005</a></li>
 <li>Luca Grassetti, Ruggero Bellio, Luca Di Gaspero, Giovanni Fonseca, Paolo Vidoni. (2021). An extended regularized adjusted plus-minus analysis for lineup management in basketball using play-by-play data. IMA Journal of Management Mathematics. <a href="https://doi.org/10.1093/imaman/dpaa022" class="uri">https://doi.org/10.1093/imaman/dpaa022</a></li>
 <li>Luís Vilar, Duarte Araújo, Keith Davids, Yaneer Bar-Yam. (2013). Science of winning soccer: Emergent pattern-forming dynamics in association football. Journal of Systems Science and Complexity. <a href="https://doi.org/10.1007/s11424-013-2286-z" class="uri">https://doi.org/10.1007/s11424-013-2286-z</a></li>
 <li>Luke Benz. (2017). NCAA Basketball Game Excitement. Yale Undergraduate Sports Analytics Group. Retrieved from <a href="https://sports.sites.yale.edu/ncaa-basketball-game-excitement-index" class="uri">https://sports.sites.yale.edu/ncaa-basketball-game-excitement-index</a></li>
 <li>Petar Vračar, Erik Štrumbelj, Igor Kononenko. (2016). Modeling basketball play-by-play data, Expert Systems with Applications. <a href="https://doi.org/10.1016/j.eswa.2015.09.004" class="uri">https://doi.org/10.1016/j.eswa.2015.09.004</a></li>
+<li>Pieter Robberechts, Jan Van Haaren, Jesse Davis. (2019). Who Will Win It? An In-game Win Probability Model for Soccer. ArXiv. <a href="http://dx.doi.org/10.1145/3447548.3467194" class="uri">http://dx.doi.org/10.1145/3447548.3467194</a></li>
 </ul>
 </section>
 <section id="section" class="level2">
