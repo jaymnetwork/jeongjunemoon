@@ -56,50 +56,56 @@ Our analysis looks at NBA single-game leaders and records for points during the 
 
 ```{r}
 kable(gamedata %>% arrange(desc(pts)) %>%
-mutate(gameResult=ifelse(outcomeGame=="W","Win","Loss")) %>%
-select(dateGame, nameTeam, slugOpponent, namePlayer,pts,gameResult) %>%
-head(5))
+        mutate(gameResult=ifelse(outcomeGame=="W","Win","Loss")) %>%
+        select(dateGame, nameTeam, slugOpponent, namePlayer,pts,gameResult) %>%
+        head(5))
 ```
 
 
 Looking at the histogram below, the scores from four players are very extreme values from right-skewed distribution. Two takeaways from this figure were that 1. it is very rare to score above 50 points, and 2. the four players are phenomenal scorers in the NBA.
 
 ```{r echo = FALSE}
-# NBA Points in Single Game By Players (2022-23)
-ggplot(gamedata, aes(x=pts))+
-  geom_histogram(color="#ebebeb", fill="#153a6f", alpha=0.9)+
-  ggtitle("NBA Points in Single Game By Players (2022-23)") +
-  xlab("Points In Single Game")+ 
-  ylab("The Number of Games")+
-  annotate("segment", x = sort(gamedata$pts, decreasing = T)[2],
-           xend = sort(gamedata$pts, decreasing = T)[2], 
-           y = 3000, yend = 0,
-           colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
-  geom_text(aes(x=71, label="D.Lillard", y=3200), vjust = -1, size=3)+
-  geom_text(aes(x=71, label="D.Mitchell", y=3000), vjust = -1, size=3)+
-  annotate("segment", x = sort(gamedata$pts, decreasing = T)[3],
-           xend = sort(gamedata$pts, decreasing = T)[3], 
-           y = 2500, yend = 0,
-           colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
-  geom_text(aes(x=63.5, label="L.Doncic", y=2500), 
-            colour="black", vjust = -1, size=3)+
-  geom_text(aes(x=63.5, label="D.Lillard", y=2700), 
-            colour="black", vjust = -1, size=3)+
-  geom_text(aes(x=56, label="J.Embiid", y=1950), 
-            colour="black", vjust = -1, size=3)+
-  annotate("segment", x = sort(gamedata$pts, decreasing = T)[5],
-           xend = sort(gamedata$pts, decreasing = T)[5], 
-           y = 2000, yend = 0,
-           colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
-  annotate("segment", x = mean(gamedata$pts),
-           xend = mean(gamedata$pts), 
-           y = 4000, yend = 0,
-           colour = "dimgrey", size = 0.8, linetype=2) +
-  geom_text(aes(x=mean(gamedata$pts)+6, label="NBA average", y=3700), 
-            colour="black", vjust = -1, size=3)+
-  theme(axis.title.x = element_text(size = 8),
-         axis.title.y = element_text(size = 8),
-         plot.title = element_text(color="black", size=10, face="bold"))
+points_histogram<-function(data){
+  # NBA Points in Single Game By Players (2022-23)
+  ggplot(data, aes(x=pts))+
+    geom_histogram(color="#ebebeb", fill="#153a6f", alpha=0.9)+
+    ggtitle("NBA Points in Single Game By Players (2022-23)") +
+    xlab("Points In Single Game")+ 
+    ylab("The Number of Games")+
+    annotate("segment", x = sort(data$pts, decreasing = T)[2],
+             xend = sort(data$pts, decreasing = T)[2], 
+             y = 3000, yend = 0,
+             colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
+    geom_text(aes(x=71, label="D.Lillard", y=3200), vjust = -1, size=3)+
+    geom_text(aes(x=71, label="D.Mitchell", y=3000), vjust = -1, size=3)+
+    annotate("segment", x = sort(data$pts, decreasing = T)[3],
+             xend = sort(data$pts, decreasing = T)[3], 
+             y = 2500, yend = 0,
+             colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
+    geom_text(aes(x=63.5, label="L.Doncic", y=2500), 
+              colour="black", vjust = -1, size=3)+
+    geom_text(aes(x=63.5, label="D.Lillard", y=2700), 
+              colour="black", vjust = -1, size=3)+
+    geom_text(aes(x=56, label="J.Embiid", y=1950), 
+              colour="black", vjust = -1, size=3)+
+    annotate("segment", x = sort(data$pts, decreasing = T)[5],
+             xend = sort(data$pts, decreasing = T)[5], 
+             y = 2000, yend = 0,
+             colour = "dimgrey", size = 0.8, arrow = arrow(length=unit(0.3, 'cm'))) +
+    annotate("segment", x = mean(data$pts),
+             xend = mean(data$pts), 
+             y = 4000, yend = 0,
+             colour = "dimgrey", size = 0.8, linetype=2) +
+    geom_text(aes(x=mean(data$pts)+6, label="NBA average", y=3700), 
+              colour="black", vjust = -1, size=3)+
+    theme(axis.title.x = element_text(size = 8),
+          axis.title.y = element_text(size = 8),
+          plot.title = element_text(color="black", size=10, face="bold"))
+}
+```
+
+```{r}
+points_histogram(gamedata)
 ```
 
 ## Player's Preference
@@ -144,14 +150,16 @@ shotloc_d<-function(data){
 }
 ```
 
-Here is the shot position data for 4 players:  
-```{r warnings=FALSE, echo=F}
+```{r echo=F}
 # Visualization display
 d_lillard<-shotloc_d(lillard_shots)
 d_mitchell<-shotloc_d(mitchell_shots)
 l_doncic<-shotloc_d(doncic_shots)
 j_embiid<-shotloc_d(embiid_shots)
+```
 
+Here is the shot position data for 4 players:  
+```{r warnings=FALSE}
 ggarrange(l_doncic, d_lillard, d_mitchell, j_embiid, heights = c(0.7, 0.7, 1, 1),
           ncol = 2, nrow = 2)
 ```
@@ -184,12 +192,14 @@ polar2<-function(data,col,dir){
 
 ```{r echo=F}
 # Coxcomb chart to see the most frequent shot types of each player and the proportion with in a player
-ld2<-polar2(doncic_shots)
-dl2<-polar2(lillard_shots)
-dm2<-polar2(mitchell_shots)
-je2<-polar2(embiid_shots)
+doncic<-polar2(doncic_shots)
+lillard<-polar2(lillard_shots)
+mitchell<-polar2(mitchell_shots)
+embiid<-polar2(embiid_shots)
+```
 
-ggarrange(ld2, dl2, dm2, je2, heights = c(0.7, 0.7, 1, 1),
+```{r}
+ggarrange(doncic, lillard, mitchell, embiid, heights = c(0.7, 0.7, 1, 1),
           ncol = 2, nrow = 2)
 ```
 
@@ -302,9 +312,13 @@ sb_lillard<-shot_line(lillard_final,"Damian Lillard")
 sb_mitchell<-shot_line(mitchell_final,"Donovan Mitchell")
 sb_embiid<-shot_line(embiid_final,"Joel Embiid")
 
+```
+
+```{r}
 ggarrange(sb_doncic, sb_lillard, sb_mitchell, sb_embiid, heights = c(0.7, 0.7, 1, 1),
           ncol = 2, nrow = 2)
 ```
+
 
 The result from the last plot does not illustrate sufficient evidence to conclude that hot hands exist during the game of basketball. However, it gives reasonable and valid evidence to dive into a deeper analysis of the selected players.
 
@@ -467,7 +481,6 @@ While the contemporary era enables us to measure new types of variables, we also
 ```{r}
 # Formula for each model
 form_def <- as.formula(as.factor(isShotMadeBinary) ~ streaks+lastFour+lastPercentage)
-
 form_full <- as.formula(as.factor(isShotMadeBinary) ~ typeAction+zoneBasic+locationX+locationY+streaks+lastFour+lastPercentage+distanceShot)
 ```
 
@@ -521,14 +534,18 @@ importance_plot<-function(classifier,Title){
           axis.title.y = element_text(size = 8))
 }
 
-ld<-importance_plot(mod_forest2,"Luka Doncic")
-dl<-importance_plot(mod_forest1,"Damian Lillard")
-dm<-importance_plot(mod_forest3,"Donovan Mitchell")
-je<-importance_plot(mod_forest4,"Joel Embiid")
+ldoncic<-importance_plot(mod_forest2,"Luka Doncic")
+dlillard<-importance_plot(mod_forest1,"Damian Lillard")
+dmitchell<-importance_plot(mod_forest3,"Donovan Mitchell")
+jembiid<-importance_plot(mod_forest4,"Joel Embiid")
 
-ggarrange(ld,dl,dm, je, heights = c(0.7, 0.7, 1, 1),
+```
+
+```{r}
+ggarrange(ldoncic,dlillard,dmitchell, jembiid, heights = c(0.7, 0.7, 1, 1),
           ncol = 2, nrow = 2)
 ```
+
 \
 
 #### Logistic Regression Summary
@@ -546,8 +563,7 @@ From the summary results, all four variables used in the definition had high p-v
 ```{r}
 # Logistic Regression Model
 logistic_model <- function(data){
-  glm(as.factor(isShotMadeBinary) ~ locationX+locationY+streaks+lastFour+lastPercentage+distanceShot, data = data, family = "binomial")
-  }
+  glm(as.factor(isShotMadeBinary) ~ locationX+locationY+streaks+lastFour+lastPercentage+distanceShot, data = data, family = "binomial")}
  
 # Summary for each player
 summary(logistic_model(lillard_shots3))
