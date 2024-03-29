@@ -520,14 +520,16 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
 ```
 
 ```{r}
-kbl_wp_chart(data=pbp_test, training_data=pbp2, "Logistic Regression", show_labels = T)
-kbl_wp_chart_new(data=pbp_test, training_data=pbp2, "SVM", show_labels = T)
+kbl_wp_chart(data=pbp_test, training_data=pbp2, algorithm="Logistic Regression", show_labels = T)
 ```
 
-Evaluating the accuracy of a model may not be feasible, as we can not know whether the team won or not during the game. Nonetheless, it's still worth noting that the models displayed reasonable performance by predicting approximately 50% prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.
+In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game's momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC's 94.8% winning percentage.
 
-The visualization function heavily relies on the 'ncaahoopR' package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances. 
+```{r}
+kbl_wp_chart_new(data=pbp_test, training_data=pbp2, algorithm="Logistic Regression", show_labels = T)
+```
 
+The visualization function for win probability heavily relies on the 'ncaahoopR' package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to to compare and analyze prediction patterns and variances. 
 
 ```{r include=F}
 pbp_test2 <- read_excel("/Users/jaymnetwork/Desktop/selenium/S43G01N256.xlsx")
@@ -545,7 +547,7 @@ plot3 <-kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Random Forest", sh
 grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
 ```
 
-The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest showed a relatively higher variability compared to the other three. Due to this increased variability, the GEI of the Random Forest model was the highest among the four models.
+The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. Most of all, the notable point is that the three models predicted approximately 50% win probability prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage. Random Forest on the other hand showed a relatively higher variability compared to the other three. Due to this increased variability, the GEI of the Random Forest model was the highest among the four models.
 
 The models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds. However, there remains a potential to amplify these models by including additional variables, such as the team's shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team.
 

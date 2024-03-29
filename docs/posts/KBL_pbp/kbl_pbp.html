@@ -248,24 +248,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons as well as time consuming factors.</p>
 <p>The training data for this project’s model spanned from October 23, 2023, to March 14, 2024, encompassing a total of 165,266 plays in the dataset. To test the model, games scheduled after March 14, 2024, were utilized for the prediction.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="at">algorithm=</span><span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="kbl_pbp_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart_new</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="st">"SVM"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game’s momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC’s 94.8% winning percentage.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart_new</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="at">algorithm=</span><span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Evaluating the accuracy of a model may not be feasible, as we can not know whether the team won or not during the game. Nonetheless, it’s still worth noting that the models displayed reasonable performance by predicting approximately 50% prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.</p>
-<p>The visualization function heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to analyze prediction patterns and variances.</p>
+<p>The visualization function for win probability heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to to compare and analyze prediction patterns and variances.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1, plot2, plot3, plot4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. However, Random Forest showed a relatively higher variability compared to the other three. Due to this increased variability, the GEI of the Random Forest model was the highest among the four models.</p>
+<p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. Most of all, the notable point is that the three models predicted approximately 50% win probability prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage. Random Forest on the other hand showed a relatively higher variability compared to the other three. Due to this increased variability, the GEI of the Random Forest model was the highest among the four models.</p>
 <p>The models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds. However, there remains a potential to amplify these models by including additional variables, such as the team’s shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team.</p>
 </section>
 <section id="assist-network-analysis" class="level2">
@@ -274,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_assist_net</span>(<span class="at">data=</span>pbp2, <span class="at">team_select=</span><span class="st">"서울 삼성"</span>,<span class="at">random=</span><span class="dv">14</span>,<span class="at">top=</span><span class="dv">13</span>,<span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>In the analysis presented above, it’s evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Seoul Samsung(서울 삼성) from 2023-10-22 to 2024-03-14. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)’s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn’s movements whenever Lee has the possession of the ball.</p>
