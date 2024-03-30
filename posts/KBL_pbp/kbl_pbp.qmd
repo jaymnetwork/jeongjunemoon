@@ -671,7 +671,8 @@ There are wide-ranging methodologies that can be applied by leveraging play-by-p
 - Luca Grassetti, Ruggero Bellio, Luca Di Gaspero, Giovanni Fonseca, Paolo Vidoni. (2021). An extended regularized adjusted plus-minus analysis for lineup management in basketball using play-by-play data. IMA Journal of Management Mathematics. <https://doi.org/10.1093/imaman/dpaa022>
 - Luís Vilar, Duarte Araújo, Keith Davids, Yaneer Bar-Yam. (2013). Science of winning soccer: Emergent pattern-forming dynamics in association football. Journal of Systems Science and Complexity. <https://doi.org/10.1007/s11424-013-2286-z>
 - Luke Benz. (2017). NCAA Basketball Game Excitement. Yale Undergraduate Sports Analytics Group. Retrieved from <https://sports.sites.yale.edu/ncaa-basketball-game-excitement-index> 
-- Petar Vračar, Erik Štrumbelj, Igor Kononenko. (2016). Modeling basketball play-by-play data, Expert Systems with Applications. <https://doi.org/10.1016/j.eswa.2015.09.004>
+- Luke Benz. (2018). NCAA Basketball Game Excitement Part II. Yale Undergraduate Sports Analytics Group. Retrieved from <https://sports.sites.yale.edu/game-excitement-index-part-ii> 
+- Petar Vračar, Erik Štrumbelj, Igor Kononenko. (2016). Modeling basketball play-by-play data. Expert Systems with Applications. <https://doi.org/10.1016/j.eswa.2015.09.004>
 - Pieter Robberechts, Jan Van Haaren, Jesse Davis. (2019). Who Will Win It? An In-game Win Probability Model for Soccer. ArXiv. <http://dx.doi.org/10.1145/3447548.3467194>
 
 
