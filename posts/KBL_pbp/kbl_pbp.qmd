@@ -41,7 +41,7 @@ $$
 
 $T$ in the formula represents the time remaining in the game with 2400 being the total duration. $n$ denotes how many number of plays has been executed, and $p_i$ is the winning probability of home team on $i$th play of the game.
 
-To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons as well as time consuming factors.
+To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons and limited time.
 
 The training data for this project's model spanned from October 23, 2023, to March 14, 2024, encompassing a total of 165,266 plays in the dataset. To test the model, games scheduled after March 14, 2024, were utilized for the prediction.
 
@@ -523,7 +523,7 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
 kbl_wp_chart(data=pbp_test, training_data=pbp2, algorithm="Logistic Regression", show_labels = T)
 ```
 
-In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game's momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC's 94.8% winning percentage.
+In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of underlying factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game's momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC's 94.8% winning percentage.
 
 In a similar vein, Robberechts et al. articulate how the calculation of win probability provides a quantifiable measure of performance under mental pressure. These pivotal moments, often termed 'clutch' plays, can be conceptualized by the difference in win probability before and after their occurrence.  Therefore, win probability models can function as a tool for assessing in-game decision-making processes and quantifying the balance between risk and reward in coaching decisions (Robberechts et al., 2019).
 
@@ -655,7 +655,7 @@ Another intriguing application for play-by-play data is assist network analysis.
 kbl_assist_net(data=pbp2, team_select="서울 삼성",random=14,top=13,"lightblue")
 ```
 
-In the analysis presented above, it's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Seoul Samsung(서울 삼성) from 2023-10-22 to 2024-03-14. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. 
+The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Samsung during the span. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. 
 
 We can also observe that Cockburn emerges as an all-around player within the network, contributing to 12.43% of Samsung's assists. While Cockburn may not excel in Samsung's defense, this network analysis mathematically prove that he is currently an irreplaceable and invaluable player for Seoul Samsung.
 
