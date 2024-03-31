@@ -33,7 +33,7 @@ While replicating the high-quality PBP data of leagues like the NBA, WNBA, and N
 
 ## Game Excitement Index & Win Probability
 
-PBP data opens up numerous possibilities for analysis and insights. One intriguing concepts is the Game Excitement Index (GEI) introduced by [Luke Benz](https://lukebenz.com/tags/ncaahoopr/). GEI seeks to conceptualize how the excitement level of a game after the game has ended. Benz explains that "It's a predictive metric, attempting to forecast how exciting a game might be." GEI could be useful for fans especially those who might have limited time. The metric guides which game to watch again as there are a large number of games throughout the season. While it can vary by games and league, following formula shows how GEI can typically be computed: 
+PBP data opens up numerous possibilities for analysis and insights. One intriguing concepts is the Game Excitement Index (GEI) introduced by [Luke Benz](https://lukebenz.com/tags/ncaahoopr/). GEI seeks to conceptualize how the excitement level of a game after the game has ended. Benz explains that "It's a predictive metric, attempting to forecast how exciting a game might be." GEI can be useful for the fans as the metric can guide which games to re-watch from a large number of games throughout the season. While it can vary by games and league, following formula shows how GEI can typically be computed: 
 
 $$
 \Large{GEI = \frac{2400}{T} \sum_{i=2}^{n} |p_i - p_{i-1}|}
