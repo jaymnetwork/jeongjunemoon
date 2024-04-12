@@ -650,7 +650,7 @@ kbl_assist_net <- function(data, team_select, random, top=10,col="orange"){
 Another intriguing application for play-by-play data is assist network analysis. Network analysis can be used to decompose the sophisticated aspect of player's team work and their contribution to a team's interactive plays (Korte et al., 2018). This is known to be vital in the analysis of team sports (Vilar et al., 2013; Korte et al., 2018). In basketball, network analysis can visualize the connections between players based on assist frequency. Although assist network is also presented in the package by Benz, a new iteration had to be developed due to data incompatibility. At the same time, the main objective of this visualization was to enhance readability. As the data spans an entire season, it can become challenging to interpret, potentially reducing its usefulness for stakeholders.
 
 ```{r}
-kbl_assist_net(data=pbp2, team_select="서울 삼성",random=14,top=13,"lightblue")
+kbl_assist_net(data=pbp2, team_select="서울 삼성", random=14, top=13, "lightblue")
 ```
 
 The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Samsung during the span. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. 
