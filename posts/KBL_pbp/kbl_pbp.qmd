@@ -21,6 +21,16 @@ library(nnet)
 library(ggplot2)
 library(gridExtra)
 library(igraph)
+library(showtext)
+
+```
+
+```{r include=F}
+# Add the 'AppleMyungjo' font (if available on the system)
+font_add("AppleGothic", "/System/Library/Fonts/AppleGothic.ttf")  # Update path as necessary
+
+# Verify the font family
+font_families()
 ```
 
 ## Introduction 
@@ -54,6 +64,11 @@ pbp_test <- read_excel("/Users/jaymnetwork/Desktop/selenium/kbl_pbp_test.xlsx")
 pbp2<- pbp %>% filter(game_id!="S43G01N90")
 pbp_test <- pbp_test %>% filter(game_id=="S43G01N252")
 ```
+
+```{r}
+pbp2
+```
+
 
 
 ```{r include=F}
@@ -196,15 +211,13 @@ kbl_wp_chart_new <- function(data, training_data, algorithm, show_labels = T) {
   if(min(x$secs_elapsed) != 0) {
 
     
-    x <- 
-      x %>% 
+    x <- x %>% 
       dplyr::bind_rows(
         dplyr::tibble('secs_remaining_absolute' = msec,
                       'secs_elapsed' = 0,
                       'win_prob' = c(0.5, 0.5),
                       'team' = c('home', 'away'))
-      ) %>% 
-      dplyr::arrange(secs_elapsed)
+      ) %>% dplyr::arrange(secs_elapsed)
   }
   
   ### Game Excitement Index
@@ -291,7 +304,7 @@ kbl_wp_chart_new <- function(data, training_data, algorithm, show_labels = T) {
                    plot.caption = element_text(size = 8, hjust = 0),
                    panel.grid.minor = element_blank(),
                    legend.position = "bottom",
-                   text=element_text(size=10, family="NanumGothic")) +
+                   text=element_text(size=10, family="AppleGothic")) +
     ggplot2::scale_x_continuous(breaks = seq(0, msec/60, 5)) +
     ggplot2::scale_y_continuous(limits = c(0,1), labels = function(x) {paste(100 * pmax(x, 1 - x), "%")}) +
     ggplot2::geom_ribbon(ymax = 0.5,
@@ -303,6 +316,7 @@ kbl_wp_chart_new <- function(data, training_data, algorithm, show_labels = T) {
                          fill = losing_col,
                          alpha = 0.2) +
     ggplot2::scale_size_identity() 
+  
   if(data$win_loss[1]==1){
       p<- p+ggplot2::scale_color_manual(values = c(away_col, home_col),
                                 labels = c(away_team, home_team))
@@ -316,14 +330,16 @@ kbl_wp_chart_new <- function(data, training_data, algorithm, show_labels = T) {
     p <- 
       p + 
       ggplot2::annotate("text", x = 0, y = 0.1, label = gei,
-                        family = "NanumGothic", size = 2.3,hjust = 0) +
+                        family = "AppleGothic", size = 2.3,hjust = 0) +
       ggplot2::annotate("text", x = 0, y = 0.025, label = min_prob,
-                        family = "NanumGothic", size = 2.3,hjust = 0)
+                        family = "AppleGothic", size = 2.3,hjust = 0)
   }
   
   p
 }
 ```
+
+
 
 ```{r include=F}
 kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
@@ -372,6 +388,8 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
   } else{
     data$win_prob <- ifelse(data$secs_remaining==0, 0, data$win_prob)
   }
+    
+    
   # Deciding home color
   if (data$team[1]=="원주 DB"){
     home_col <- "#0d7128"
@@ -448,7 +466,7 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
     plot_lines <- c(plot_lines, 2400 + ot_counter * 300)
     ot_counter <- ot_counter + 1
   }
-
+  print(plot_lines)
   ### Get into Appropriate Format
   x <- rbind(
     dplyr::select(data, secs_remaining, win_prob) %>%
@@ -499,7 +517,7 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
                    axis.title = element_text(size = 10,face="bold"),
                    plot.caption = element_text(size = 8, hjust = 0),
                    legend.position = "bottom",
-                   text=element_text(size=10, family="NanumGothic")) +
+                   text=element_text(size=10, family="AppleGothic")) +
     ggplot2::scale_x_continuous(breaks = seq(0, msec/60, 5)) +
     ggplot2::scale_y_continuous(labels = function(x) {paste(100 * x, "%")}) +
     ggplot2::scale_color_manual(values = c(away_col, home_col),
@@ -508,18 +526,17 @@ kbl_wp_chart <- function(data, training_data, algorithm, show_labels = T) {
   if(show_labels) {
     p <- p +
       ggplot2::annotate("text", x = 0, y = 0.1, label = gei,
-                        family = "NanumGothic", size = 2.3,hjust = 0) +
+                        family = "AppleGothic", size = 2.3,hjust = 0) +
       ggplot2::annotate("text", x = 0, y = 0.025, label = min_prob,
-                        family = "NanumGothic", size = 2.3,hjust = 0)
+                        family = "AppleGothic", size = 2.3,hjust = 0)
   }
 
+  
   p
 }
 ```
 
-```{r}
-kbl_wp_chart(data=pbp_test, training_data=pbp2, algorithm="Logistic Regression", show_labels = T)
-```
+
 
 In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of underlying factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game's momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC's 94.8% winning percentage.
 
@@ -543,6 +560,7 @@ plot2 <- kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Naive Bayes", sho
 plot3 <-kbl_wp_chart_new(data=pbp_test2, training_data=pbp2, "Random Forest", show_labels = T)+ggtitle("Random Forest")
 ```
 
+
 ```{r}
 grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
 ```
@@ -553,6 +571,8 @@ The Random Forest model, on the other hand, showed a relatively higher variabili
 
 There still remains a potential to amplify these models by including additional variables, such as the team's shooting percentage over the last 4 to 5 shots or the streaks of consecutive shots made by the team. We can also refine the pre-game win probability by considering factors such as the team's schedule, including back-to-back games, and their recent performance over the last few games.
 
+
+
 ```{r include=F}
 add_assist <- function(data){
   data$shooter<-rep(NA, nrow(data))
@@ -562,15 +582,16 @@ add_assist <- function(data){
   for (i in 1:(nrow(data)-1)){
     text <- data$description[i]
     result <- substr(text, nchar(text) - 1, nchar(text))
-    
-    if (result == "성공"){
+
+    if (result=="성공"){
+
       shot_taker <- substr(text, 1, nchar(text) - 5)
       data$shooter[i] <- shot_taker
       if (data$time_remaining[i]==data$time_remaining[i+1] & grepl("어시스트", data$description[i+1])==T){
         text <- data$description[i+1]
         # Split the string by all spaces except the last one
         split_text <- strsplit(text, " (?=[^ ]+$)", perl = TRUE)[[1]]
-        
+
         # Extract the first element
         data$assisted[i] <- split_text[-length(split_text)][1]
       }
@@ -580,9 +601,9 @@ add_assist <- function(data){
   data <- data[!grepl("자유투", data$description), ]
   x<-na.omit(data)
   ### Adjust Three Point Weights in Network
-  x$weights <- 3
+  x$weights <- 2
 
-  
+
   threes <- grep("3점슛", x$description)
   x$weights[threes] <- 3
 
@@ -591,37 +612,38 @@ add_assist <- function(data){
 }
 
 
-#View(add_assist(pbp_test))
+
 ```
 
 ```{r include=F}
-kbl_assist_net <- function(data, team_select, random, top=10,col="orange"){
+kbl_assist_net <- function(data, team_select, random, top=10, col="orange"){
   basketball_data<-data[data$team==team_select,]
   min_date<-min(basketball_data$date)
   max_date<-max(basketball_data$date)
-  basketball_data2<-add_assist(basketball_data)
   basketball_data<-add_assist(basketball_data)
-  basketball_data<- basketball_data %>% group_by(assisted, shooter) %>% 
+
+  basketball_data<- basketball_data %>% group_by(assisted, shooter) %>%
     summarise(points = sum(weights),
               average = mean(weights),.groups = "drop" )
   basketball_data$shooter <- trimws(basketball_data$shooter, "right")
   basketball_data<-basketball_data[, c( "assisted", "shooter","points")]
   basketball_data<-basketball_data %>% arrange(desc(points)) %>% head(top)
-  basketball_graph <- graph_from_data_frame(basketball_data, directed = TRUE)
-  
-  value_counts <- table(basketball_data2$assisted)
 
-  # Calculate proportion of each unique value
+  basketball_graph <- graph_from_data_frame(basketball_data, directed = TRUE)
+
+  value_counts <- table(basketball_data$assisted)
+
+  # # Calculate proportion of each unique value
   proportions <- as.data.frame(prop.table(value_counts)) %>% arrange(desc(Freq))
-  
-  par(mar = c(3, 3, 3, 3)) 
-  set.seed(random) 
+
+  par(mar = c(3, 3, 3, 3),family="AppleMyungjo")
+  set.seed(random)
   plot(basketball_graph,  # Use a circular layout for simplicity
      vertex.label.dist = 0,      # Adjust label distance from nodes
      vertex.label.cex = 0.7,     # Adjust label size
-     edge.arrow.size = 0.5,  
+     edge.arrow.size = 0.5,
      edge.curved = 0.3, # Adjust arrow size for directed graph
-     edge.label = basketball_data$points, 
+     edge.label = basketball_data$points,
      vertex.label.color = "black",
      vertex.color = col,
      vertex.frame.color = col,
@@ -629,19 +651,24 @@ kbl_assist_net <- function(data, team_select, random, top=10,col="orange"){
      #edge.width=(basketball_data$points),# Show shot type as edge labels
      edge.label.cex = 0.7,
      edge.label.color="black",
-     vertex.label.family ="NanumGothic",
-     edge.label.family = "NanumGothic",
+     vertex.label.family ="AppleGothic",
+     edge.label.family = "AppleGothic",
+     main.family ="AppleGothic",
      edge.label.font = 2)
 
-  title(main = (paste0("Assist Network for ",team_select)), cex.main = 0.9, font.main = 2)
+  title(main = (paste0("Assist Network for ",team_select)), cex.main = 0.9, font.main = 2,
+        family="AppleGothic")
   mtext(paste0("From ",min_date," to ",max_date), side = 3, line = 0, cex = 0.6)
   text(-1.8, -0.8,cex = 0.6, paste0("Assist Frequency Leaders:"),pos=4)
   text(-1.8, -0.9,cex = 0.6, paste0("• ",proportions[1,1],
-                                "(",round(100*proportions[1,2],2),"%)"),pos = 4)
+                                "(",round(100*proportions[1,2],2),"%)"),pos = 4,
+       family="AppleGothic")
   text(-1.8, -1.0,cex = 0.6, paste0("• ",proportions[2,1],
-                                "(",round(100*proportions[2,2],2),"%)"),pos = 4)
+                                "(",round(100*proportions[2,2],2),"%)"),pos = 4,
+       family="AppleGothic")
   text(-1.8, -1.1,cex = 0.6, paste0("• ",proportions[3,1],
-                                "(",round(100*proportions[3,2],2),"%)"),pos = 4)
+                                "(",round(100*proportions[3,2],2),"%)"),pos = 4,
+       family="AppleGothic")
 }
 ```
 
@@ -653,9 +680,10 @@ Another intriguing application for play-by-play data is assist network analysis.
 kbl_assist_net(data=pbp2, team_select="서울 삼성", random=14, top=13, "lightblue")
 ```
 
-The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It's evident that JungHyun Lee(이정현) had the highest assist frequency, accounting for 26.5% of assists of Samsung during the span. Lee, who ranks at third in average assists in the league, contributed 264 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. 
 
-We can also observe that Cockburn emerges as an all-around player within the network, contributing to 12.43% of Samsung's assists. While Cockburn may not excel in Samsung's defense, this network analysis mathematically prove that he is currently an irreplaceable and invaluable player for Seoul Samsung.
+The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It's evident that Sirae Kim(김시래) had the highest assist frequency, accounting for 38.46% of assists of Samsung during the span. Lee, who ranks at third in average assists in the league, contributed 176 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. 
+
+We can also observe that Cockburn emerges as an all-around player within the network, contributing to 23.08% of Samsung's assists. While Cockburn may not excel in Samsung's defense, this network analysis mathematically prove that he is currently an irreplaceable and invaluable player for Seoul Samsung.
 
 
 ## Discussion
@@ -674,9 +702,10 @@ There are wide-ranging methodologies that can be applied by leveraging play-by-p
 - Pieter Robberechts, Jan Van Haaren, Jesse Davis. (2019). Who Will Win It? An In-game Win Probability Model for Soccer. ArXiv. <http://dx.doi.org/10.1145/3447548.3467194>
 
 
+
 ## \n
 
-This project is also in the process of releasing as an R package to contribute to Korean basketball analytics.
+This project is also in the process of releasing as an Python package to contribute to Korean basketball analytics.
 
 
 

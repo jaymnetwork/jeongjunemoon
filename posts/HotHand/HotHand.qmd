@@ -42,7 +42,7 @@ mitchell_shots <- teams_shots(teams = "Cleveland Cavaliers",seasons = 2023) %>%
 # dim(mitchell_shots) gives 1402, 27
 
 doncic_shots <- teams_shots(teams = "Dallas Mavericks",seasons = 2023) %>%
-  filter(namePlayer == "Luka Doncic")
+  filter(namePlayer == "Luka Dončić")
 # dim(doncic_shots) gives 1449, 27
 
 embiid_shots <- PHI_shots <- teams_shots(teams = "Philadelphia 76ers",seasons = 2023) %>%
@@ -116,7 +116,7 @@ Prior to testing the hot hand hypothesis, we analyzed each player's shot prefere
 # We acquired the courtPoints.csv from 
 # "https://raw.githubusercontent.com/toddwschneider/ballr/master/plot_court.R" 
 # and saved as CSV file.
-court_points <- read.csv("/Users/jaymnetwork/Desktop/courtPoints.csv") 
+court_points <- read.csv("/Users/jaymnetwork/Desktop/NBA DATA/courtPoints.csv") 
 
 # The function visualizes the shot density using heat map for each player
 shotloc_d<-function(data){
