@@ -65,9 +65,7 @@ pbp2<- pbp %>% filter(game_id!="S43G01N90")
 pbp_test <- pbp_test %>% filter(game_id=="S43G01N252")
 ```
 
-```{r}
-pbp2
-```
+
 
 
 
@@ -635,7 +633,7 @@ kbl_assist_net <- function(data, team_select, random, top=10, col="orange"){
 
   # # Calculate proportion of each unique value
   proportions <- as.data.frame(prop.table(value_counts)) %>% arrange(desc(Freq))
-
+  
   par(mar = c(3, 3, 3, 3),family="AppleMyungjo")
   set.seed(random)
   plot(basketball_graph,  # Use a circular layout for simplicity
@@ -681,7 +679,7 @@ kbl_assist_net(data=pbp2, team_select="서울 삼성", random=14, top=13, "light
 ```
 
 
-The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It's evident that Sirae Kim(김시래) had the highest assist frequency, accounting for 38.46% of assists of Samsung during the span. Lee, who ranks at third in average assists in the league, contributed 176 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. 
+The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It's evident Junghyun Lee(이정현) was a player who contributed the most by assists. Lee, who ranks at third in average assists in the league, contributed 176 points to Kofi Cockburn(코피 코번)'s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn's movements whenever Lee has the possession of the ball. However, Sirae Kim (김시래) had the highest assist frequency, at 38.46%. This suggests that Kim's assists are distributed across multiple players rather than being dependent on any particular individuals.
 
 We can also observe that Cockburn emerges as an all-around player within the network, contributing to 23.08% of Samsung's assists. While Cockburn may not excel in Samsung's defense, this network analysis mathematically prove that he is currently an irreplaceable and invaluable player for Seoul Samsung.
 

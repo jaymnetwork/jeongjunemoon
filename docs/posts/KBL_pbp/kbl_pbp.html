@@ -246,41 +246,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \]</span></p>
 <p><span class="math inline">\(T\)</span> in the formula denotes the time remaining in the game with 2400 being the total duration. <span class="math inline">\(n\)</span> represents the number of plays executed, and <span class="math inline">\(p_i\)</span> is the winning probability of home team on <span class="math inline">\(i\)</span>th play of the game. To estimate the winning probability, Benz utilized a Logistic Regression algorithm, incorporating variables such as score difference and time remaining for prediction. While he included the pre-game point spread in the model, the sports betting related variables in this project was excluded due to personal reasons and limited time.</p>
 <p>The training data for this project’s model spanned from October 23, 2023, to March 14, 2024, encompassing a total of 165,266 plays in the dataset. To test the model, games scheduled after March 14, 2024, were utilized for the prediction.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pbp2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 165,266 × 13
-   player_home_away time_remaining description        team   date               
-   &lt;chr&gt;            &lt;chr&gt;          &lt;chr&gt;              &lt;chr&gt;  &lt;dttm&gt;             
- 1 Home             10:00:00       박지훈 교체(IN)    안양 … 2023-10-21 00:00:00
- 2 Home             10:00:00       김경원 교체(IN)    안양 … 2023-10-21 00:00:00
- 3 Home             10:00:00       최성원 교체(IN)    안양 … 2023-10-21 00:00:00
- 4 Home             10:00:00       배병준 교체(IN)    안양 … 2023-10-21 00:00:00
- 5 Home             10:00:00       대릴 먼로 교체(IN) 안양 … 2023-10-21 00:00:00
- 6 Away             10:00:00       김선형 교체(IN)    서울 … 2023-10-21 00:00:00
- 7 Away             10:00:00       허일영 교체(IN)    서울 … 2023-10-21 00:00:00
- 8 Away             10:00:00       오재현 교체(IN)    서울 … 2023-10-21 00:00:00
- 9 Away             10:00:00       자밀 워니 교체(IN) 서울 … 2023-10-21 00:00:00
-10 Away             10:00:00       오세근 교체(IN)    서울 … 2023-10-21 00:00:00
-# ℹ 165,256 more rows
-# ℹ 8 more variables: win_loss &lt;dbl&gt;, quarter &lt;dbl&gt;, secs_remaining &lt;dbl&gt;,
-#   home_score &lt;dbl&gt;, away_score &lt;dbl&gt;, score_diff &lt;dbl&gt;, play_length &lt;dbl&gt;,
-#   game_id &lt;chr&gt;</code></pre>
-</div>
-</div>
 <p>In-game win probability analysis holds valuable insights not only for spectators but also for coaches and players as it is important to acknowledge the potential impact of underlying factors that led to the turning point of a game. Such analysis can enable them to make strategic adjustments and informed decisions during the game-play. Analyzing the win probability chart provided above and below, the probability lines allow us to pinpoint the moment when LG began to reverse the game’s momentum and increase their chances of winning. On March 22th, JaeDo Lee emerged as a top scorer for LG scoring 13 of his 20 points in the 3rd quarter on the road. To put his 13 points into perspective, this is roughly equivalent to overturning KCC’s 94.8% winning percentage.</p>
 <p>In a similar vein, Robberechts et al.&nbsp;articulate how the calculation of win probability provides a quantifiable measure of performance under mental pressure. These pivotal moments, often termed ‘clutch’ plays, can be conceptualized by the difference in win probability before and after their occurrence. Therefore, win probability models can function as a tool for assessing in-game decision-making processes and quantifying the balance between risk and reward in coaching decisions (Robberechts et al., 2019).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart_new</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="at">algorithm=</span><span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_wp_chart_new</span>(<span class="at">data=</span>pbp_test, <span class="at">training_data=</span>pbp2, <span class="at">algorithm=</span><span class="st">"Logistic Regression"</span>, <span class="at">show_labels =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The visualization function for win probability heavily relies on the ‘ncaahoopR’ package by Benz. Meanwhile, this project explored four algorithms—Logistic Regression, Naive Bayes, Random Forest, and Neural Network—to to compare and analyze prediction patterns and variances. The four models in this project were straightforward, comprising the variables of whether a play was made by the home or away team, score difference, and time remaining in seconds.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1, plot2, plot3, plot4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1, plot2, plot3, plot4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The predictions of three algorithms—Logistic Regression, Naive Bayes, and Neural Network—predicted similar patterns. The notable point is that the three models predicted approximately 50% win probability prior to the game. In fact, they slightly exceeded this threshold indicating the team tends to win more if they have home advantage.</p>
@@ -291,12 +269,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="assist-network-analysis">Assist Network Analysis</h2>
 <p>Another intriguing application for play-by-play data is assist network analysis. Network analysis can be used to decompose the sophisticated aspect of player’s team work and their contribution to a team’s interactive plays (Korte et al., 2018). This is known to be vital in the analysis of team sports (Vilar et al., 2013; Korte et al., 2018). In basketball, network analysis can visualize the connections between players based on assist frequency. Although assist network is also presented in the package by Benz, a new iteration had to be developed due to data incompatibility. At the same time, the main objective of this visualization was to enhance readability. As the data spans an entire season, it can become challenging to interpret, potentially reducing its usefulness for stakeholders.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_assist_net</span>(<span class="at">data=</span>pbp2, <span class="at">team_select=</span><span class="st">"서울 삼성"</span>, <span class="at">random=</span><span class="dv">14</span>, <span class="at">top=</span><span class="dv">13</span>, <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl_assist_net</span>(<span class="at">data=</span>pbp2, <span class="at">team_select=</span><span class="st">"서울 삼성"</span>, <span class="at">random=</span><span class="dv">14</span>, <span class="at">top=</span><span class="dv">13</span>, <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="kbl_pbp_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It’s evident that Sirae Kim(김시래) had the highest assist frequency, accounting for 38.46% of assists of Samsung during the span. Lee, who ranks at third in average assists in the league, contributed 176 points to Kofi Cockburn(코피 코번)’s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn’s movements whenever Lee has the possession of the ball.</p>
+<p>The above plot illustrates an assist network analysis for the major eight players of Seoul Samsung (서울 삼성) from October 22, 2023, to March 14, 2024. It’s evident Junghyun Lee(이정현) was a player who contributed the most by assists. Lee, who ranks at third in average assists in the league, contributed 176 points to Kofi Cockburn(코피 코번)’s total, who currently ranks at third in most points averaged in the KBL. Thus, teams preparing to play against Seoul Samsung should prioritize awareness of Cockburn’s movements whenever Lee has the possession of the ball. However, Sirae Kim (김시래) had the highest assist frequency, at 38.46%. This suggests that Kim’s assists are distributed across multiple players rather than being dependent on any particular individuals.</p>
 <p>We can also observe that Cockburn emerges as an all-around player within the network, contributing to 23.08% of Samsung’s assists. While Cockburn may not excel in Samsung’s defense, this network analysis mathematically prove that he is currently an irreplaceable and invaluable player for Seoul Samsung.</p>
 </section>
 <section id="discussion" class="level2">
