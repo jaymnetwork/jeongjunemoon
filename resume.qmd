@@ -3,6 +3,7 @@ title: "Curriculum Vitae"
 ---
 Although I prefer to write my name as JeongJune, my legal name does not have the letter ‘e’ at the end.
 
-<iframe width="700" height="600" src="images/CV_JeongJun Moon.pdf">
+[View Full CV](images/CV_JeongJun Moon.pdf)
 
-</iframe>
+
+<iframe width="700" height="600" src="images/CV_JeongJun Moon.pdf">  </iframe> 
