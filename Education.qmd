@@ -11,4 +11,3 @@ University of Washington | Seattle, WA. | Sep. 2019 – Dec. 2021
 <span style="display: inline-block; margin-left: 20px;">
 Bachelor of Arts in Geography: Data Science, Minor in Informatics.
 </span>
-
