@@ -3,16 +3,19 @@ title: "Education"
 ---
 
 University at Buffalo - The State University of New York | Buffalo, NY. | Sep. 2025 – Present
+
 <span style="display: inline-block; margin-left: 20px;">
 Ph.D in Computational Data-Enabled Science.
 </span>
 
 University of Pittsburgh | Pittsburgh, PA. | Sep. 2022 – Apr. 2024 
+
 <span style="display: inline-block; margin-left: 20px;">
 Master of Arts in Statistics.
 </span>
 
 University of Washington | Seattle, WA. | Sep. 2019 – Dec. 2021 
+
 <span style="display: inline-block; margin-left: 20px;">
 Bachelor of Arts in Geography: Data Science, Minor in Informatics.
 </span>
