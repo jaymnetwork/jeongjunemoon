@@ -30,7 +30,7 @@ website:
         menu: 
           - text: Publications
             href: Publications.qmd
-          - text: Projects  
+          - text: Posts  
             href: projects.qmd
             
       - text: PHOTOGRAPHY

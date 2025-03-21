@@ -1,0 +1,15 @@
+---
+title: "Asia Pacific Academic Consortium for Public Health Conference Poster"
+date: 10-23-2024 
+author: JeongJune Moon
+categories: [Conference Posters]
+image: "apcph.webp"
+---
+
+This poster was awarded 'The Best Poster Presentation' at the 55th APACPH 2024.
+
+![](apcph.webp){height=100px}
+
+
+<iframe width="700" height="600" src="Poster_APACPH.pdf">
+
