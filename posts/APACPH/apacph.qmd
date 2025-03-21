@@ -11,5 +11,5 @@ This poster was awarded 'The Best Poster Presentation' at the 55th APACPH 2024.
 ![](apcph.webp){height=100px}
 
 
-<iframe width="700" height="600" src="Poster_APACPH.pdf">
+<iframe width="500" height="700" src="Poster_APACPH.pdf">
 
