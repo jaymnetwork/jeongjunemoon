@@ -5,7 +5,7 @@ title: "Education"
 University at Buffalo - The State University of New York | Buffalo, NY. | Sep. 2025 – Present
 
 <span style="display: inline-block; margin-left: 20px;">
-Ph.D. in Computational Data-Enabled Science.
+Doctor of Philosophy in Computational Data-Enabled Science.
 </span>
 
 University of Pittsburgh | Pittsburgh, PA. | Sep. 2022 – Apr. 2024 
