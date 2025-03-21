@@ -4,12 +4,12 @@ date: 10-23-2024
 author: JeongJune Moon
 categories: [Conference Posters]
 image: "apcph.webp"
+
 ---
 
 This poster was awarded 'The Best Poster Presentation' at the 55th APACPH 2024.
 
-![](apcph.webp){height=100px}
+![](apcph.webp){width=300px}
 
 
-<iframe width="500" height="700" src="Poster_APACPH.pdf">
-
+<embed src="Poster_APACPH.pdf" width="100%" height="600px" type="application/pdf" >
