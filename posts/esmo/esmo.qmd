@@ -1,0 +1,16 @@
+---
+title: "European Society For Medical Oncology Conference Poster"
+date: 11-13-2025 
+author: JeongJune Moon
+categories: [Conference Posters]
+image: "esmo-ai-and-digital-oncology-2025-1000x250_yq3fiy.jpg"
+
+---
+
+This poster was presented at <a href="https://www.esmo.org/meeting-calendar/esmo-ai-and-digital-oncology-congress-2025">ESMO AI & Oncology Conference</a> at Berlin during November 12–14, 2025. 
+
+
+![](esmo-ai-and-digital-oncology-2025-1000x250_yq3fiy.jpg){}
+
+
+<embed src="3_Poster_ESMO_227P.pdf" width="100%" height="600px" type="application/pdf" >
